@@ -142,3 +142,374 @@ conn.commit()
 conn.close()
 
 print("Database and 'products' table created successfully.")
+
+Below is an expanded Python script that not only generates a large, randomized dataset of food products (similar to the previous examples) but also creates tables for recipes and recipe ingredients, allowing you to store common meal recipes and link them (textually) to the product catalog.
+
+In this setup:
+	•	products: Holds the large set of items (randomized categories, prices, availability, etc.).
+	•	recipes: Stores a curated set of common meal recipes (e.g., Spaghetti Marinara, Chicken Stir-Fry).
+	•	recipe_ingredients: Each row links one recipe to an ingredient name (text), along with a simple quantity and measure.
+
+Important Note: This example uses text-based matching between recipe_ingredients.ingredient and products.item. You can do partial or exact string matches when recommending products for each recipe. If you need perfect foreign-key references (e.g., each ingredient matched to a precise product row), you’ll need more controlled naming or a separate mapping step.
+
+⸻
+
+Full Python Script
+
+import sqlite3
+import random
+
+# -----------------------------------------------------------------------------
+# 1. DATA SOURCES
+# -----------------------------------------------------------------------------
+
+# Categories -> List of Items
+CATEGORIES = {
+    "Produce": [
+        "Apples", "Bananas", "Carrots", "Spinach", "Broccoli", "Lettuce", "Onions",
+        "Tomatoes", "Bell Peppers", "Cucumbers", "Grapes", "Strawberries", "Potatoes"
+    ],
+    "Dairy": [
+        "Milk", "Eggs", "Cheese", "Yogurt", "Butter", "Cottage Cheese", "Cream Cheese"
+    ],
+    "Meats": [
+        "Chicken Breast", "Ground Beef", "Pork Chops", "Bacon", "Steak", "Salmon",
+        "Shrimp", "Turkey", "Ham"
+    ],
+    "Pantry": [
+        "Rice", "Pasta", "Flour", "Sugar", "Olive Oil", "Baking Powder", "Peanut Butter",
+        "Jelly", "Cereal", "Oats", "Beans", "Canned Tuna"
+    ],
+    "Beverages": [
+        "Bottled Water", "Orange Juice", "Apple Juice", "Soda", "Sparkling Water",
+        "Coffee", "Tea Bags"
+    ],
+    "Frozen": [
+        "Frozen Pizza", "Frozen Vegetables", "Ice Cream", "Frozen Berries",
+        "Frozen French Fries"
+    ],
+    "Snacks": [
+        "Chips", "Cookies", "Crackers", "Popcorn", "Granola Bars", "Mixed Nuts"
+    ],
+    "Bakery": [
+        "Bread", "Bagels", "Muffins", "Donuts", "Tortillas", "Croissants"
+    ],
+    "Condiments & Sauces": [
+        "Salt", "Pepper", "Ketchup", "Mustard", "Mayonnaise", "Soy Sauce", "Vinegar",
+        "BBQ Sauce"
+    ]
+}
+
+BRANDS = [
+    "Great Value", "Member's Mark", "Organic Farms", "Kirkland",
+    "Heinz", "Del Monte", "Market Pantry", "Private Selection"
+]
+
+FULFILLMENT_SPEED_OPTIONS = ["Same Day", "Next Day", "Two Day", "Standard"]
+AVAILABILITY_OPTIONS = ["In Stock", "Out of Stock", "Limited Stock"]
+WALMART_CASH_OFFERS_OPTIONS = ["Yes", "No"]
+GIFTING_OPTIONS = ["No", "Gift Wrap Available"]
+BENEFIT_PROGRAMS_OPTIONS = ["N/A", "SNAP Eligible", "WIC Eligible", "Senior Discount"]
+
+# Common default fields (you can refine these)
+DEFAULT_DEPARTMENTS = "Grocery"
+DEFAULT_FORM = "N/A"
+DEFAULT_FOOD_CONDITION = "Fresh"
+DEFAULT_FLAVOR = "N/A"
+DEFAULT_MEAT_TYPE = "N/A"
+DEFAULT_NUTRITIONAL_CONTENT = "N/A"
+DEFAULT_SPECIAL_DIET_NEEDS = "None"
+DEFAULT_PREPARATION_METHOD = "N/A"
+DEFAULT_CONTAINER = "N/A"
+DEFAULT_PACKAGED_MEAL_TYPE = "N/A"
+DEFAULT_SIZE_DESCRIPTOR = "N/A"
+DEFAULT_RETAILER = "Walmart"
+
+# -----------------------------------------------------------------------------
+# 2. RECIPE DATA
+#    We'll keep a small curated list of recipes and their ingredients.
+#    The 'ingredients' are stored as (ingredient_name, quantity, measure).
+#    You can expand this list to include many more recipes.
+# -----------------------------------------------------------------------------
+
+RECIPES = [
+    {
+        "name": "Spaghetti Marinara",
+        "instructions": (
+            "Cook pasta according to package directions. Warm marinara sauce in a pan. "
+            "Combine pasta with sauce, then season with salt and pepper."
+        ),
+        "ingredients": [
+            ("Pasta", 8, "oz"), 
+            ("Olive Oil", 2, "tbsp"), 
+            ("Salt", 1, "tsp"), 
+            ("Pepper", 0.5, "tsp"),
+            ("Tomatoes", 2, "whole (optional garnish)"),
+            ("Cheese", 0.25, "cup (optional)")
+        ]
+    },
+    {
+        "name": "Chicken Stir-Fry",
+        "instructions": (
+            "Heat oil in a wok or pan. Stir-fry chicken pieces until cooked. "
+            "Add vegetables, soy sauce, and spices. Serve with rice."
+        ),
+        "ingredients": [
+            ("Chicken Breast", 1, "lb"),
+            ("Bell Peppers", 2, "whole"),
+            ("Onions", 1, "whole"),
+            ("Soy Sauce", 2, "tbsp"),
+            ("Rice", 1, "cup (uncooked)"),
+            ("Olive Oil", 1, "tbsp")
+        ]
+    },
+    {
+        "name": "Grilled Cheese Sandwich",
+        "instructions": (
+            "Butter two slices of bread. Place cheese slices between them. "
+            "Grill in a pan until golden brown on both sides."
+        ),
+        "ingredients": [
+            ("Bread", 2, "slices"),
+            ("Butter", 1, "tbsp"),
+            ("Cheese", 2, "slices")
+        ]
+    },
+    {
+        "name": "Garden Salad",
+        "instructions": (
+            "Chop lettuce, tomatoes, cucumbers, and onions. Toss in a bowl "
+            "with dressing. Top with croutons or cheese if desired."
+        ),
+        "ingredients": [
+            ("Lettuce", 1, "head"),
+            ("Tomatoes", 2, "whole"),
+            ("Cucumbers", 1, "whole"),
+            ("Onions", 0.5, "whole"),
+            ("Salt", 0.25, "tsp"),
+            ("Pepper", 0.25, "tsp")
+        ]
+    },
+    {
+        "name": "Pancakes",
+        "instructions": (
+            "Mix flour, sugar, baking powder, milk, and eggs into a batter. "
+            "Cook on a greased griddle until golden on both sides."
+        ),
+        "ingredients": [
+            ("Flour", 1, "cup"),
+            ("Sugar", 2, "tbsp"),
+            ("Baking Powder", 2, "tsp"),
+            ("Milk", 1, "cup"),
+            ("Eggs", 1, "whole"),
+            ("Butter", 1, "tbsp (for greasing)")
+        ]
+    }
+]
+
+# 3. Decide how many product items you want in your dataset
+NUM_ITEMS_TO_INSERT = 300  # Increase or decrease as desired
+
+# -----------------------------------------------------------------------------
+# 4. CREATE OR CONNECT TO THE DATABASE
+# -----------------------------------------------------------------------------
+conn = sqlite3.connect("walmart.db")
+cursor = conn.cursor()
+
+# -----------------------------------------------------------------------------
+# 5. CREATE TABLES
+# -----------------------------------------------------------------------------
+
+# -- products table --
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS products (
+    product_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    item TEXT,
+
+    Departments TEXT,
+    Price REAL,
+    Brand TEXT,
+    FulfillmentSpeed TEXT,
+    Availability TEXT,
+    WalmartCashOffers TEXT,
+    CustomerRating REAL,
+    Form TEXT,
+    FoodCondition TEXT,
+    Flavor TEXT,
+    MeatType TEXT,
+    NutritionalContent TEXT,
+    SpecialDietNeeds TEXT,
+    PreparationMethod TEXT,
+    Container TEXT,
+    PackagedMealType TEXT,
+    Category TEXT,
+    SizeDescriptor TEXT,
+    Retailer TEXT,
+    Gifting TEXT,
+    BenefitPrograms TEXT
+);
+""")
+
+# -- recipes table --
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS recipes (
+    recipe_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT,
+    instructions TEXT
+);
+""")
+
+# -- recipe_ingredients table --
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS recipe_ingredients (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    recipe_id INTEGER,
+    ingredient TEXT,
+    quantity REAL,
+    measure TEXT,
+    FOREIGN KEY (recipe_id) REFERENCES recipes(recipe_id)
+);
+""")
+
+conn.commit()
+
+# -----------------------------------------------------------------------------
+# 6. POPULATE THE PRODUCTS TABLE WITH RANDOM DATA
+# -----------------------------------------------------------------------------
+
+def generate_random_product():
+    """Return a tuple of random product data matching the products schema."""
+    category = random.choice(list(CATEGORIES.keys()))
+    item_name = random.choice(CATEGORIES[category])
+    
+    price = round(random.uniform(1.00, 20.00), 2)
+    brand = random.choice(BRANDS)
+    fulfillment_speed = random.choice(FULFILLMENT_SPEED_OPTIONS)
+    availability = random.choice(AVAILABILITY_OPTIONS)
+    walmart_cash_offers = random.choice(WALMART_CASH_OFFERS_OPTIONS)
+    customer_rating = round(random.uniform(1.0, 5.0), 1)
+    gifting = random.choice(GIFTING_OPTIONS)
+    benefit_programs = random.choice(BENEFIT_PROGRAMS_OPTIONS)
+    
+    return (
+        item_name,
+        DEFAULT_DEPARTMENTS,
+        price,
+        brand,
+        fulfillment_speed,
+        availability,
+        walmart_cash_offers,
+        customer_rating,
+        DEFAULT_FORM,
+        DEFAULT_FOOD_CONDITION,
+        DEFAULT_FLAVOR,
+        DEFAULT_MEAT_TYPE,
+        DEFAULT_NUTRITIONAL_CONTENT,
+        DEFAULT_SPECIAL_DIET_NEEDS,
+        DEFAULT_PREPARATION_METHOD,
+        DEFAULT_CONTAINER,
+        DEFAULT_PACKAGED_MEAL_TYPE,
+        category,
+        DEFAULT_SIZE_DESCRIPTOR,
+        DEFAULT_RETAILER,
+        gifting,
+        benefit_programs
+    )
+
+insert_sql = """
+INSERT INTO products (
+    item,
+    Departments, Price, Brand, FulfillmentSpeed, Availability, WalmartCashOffers,
+    CustomerRating, Form, FoodCondition, Flavor, MeatType, NutritionalContent,
+    SpecialDietNeeds, PreparationMethod, Container, PackagedMealType,
+    Category, SizeDescriptor, Retailer, Gifting, BenefitPrograms
+) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+"""
+
+for _ in range(NUM_ITEMS_TO_INSERT):
+    cursor.execute(insert_sql, generate_random_product())
+
+conn.commit()
+
+# -----------------------------------------------------------------------------
+# 7. POPULATE THE RECIPES AND RECIPE_INGREDIENTS TABLES
+# -----------------------------------------------------------------------------
+
+# Insert recipes
+recipe_insert_sql = """
+INSERT INTO recipes (name, instructions)
+VALUES (?, ?)
+"""
+
+recipe_ingredient_insert_sql = """
+INSERT INTO recipe_ingredients (recipe_id, ingredient, quantity, measure)
+VALUES (?, ?, ?, ?)
+"""
+
+# Insert each recipe and its associated ingredients
+for recipe in RECIPES:
+    # Insert recipe record
+    cursor.execute(recipe_insert_sql, (recipe["name"], recipe["instructions"]))
+    inserted_recipe_id = cursor.lastrowid  # get the auto-generated recipe_id
+    
+    # Insert each ingredient for this recipe
+    for (ingredient_name, quantity, measure) in recipe["ingredients"]:
+        cursor.execute(recipe_ingredient_insert_sql, (inserted_recipe_id, ingredient_name, quantity, measure))
+
+conn.commit()
+
+# -----------------------------------------------------------------------------
+# 8. FINISH
+# -----------------------------------------------------------------------------
+conn.close()
+
+print(f"Inserted {NUM_ITEMS_TO_INSERT} products, plus {len(RECIPES)} recipes into the database.")
+
+
+
+⸻
+
+How to Use This Database
+	1.	Exploring Products
+	•	The products table contains NUM_ITEMS_TO_INSERT rows of random grocery items. You can query them to see items that match a recipe’s ingredient list using text matching, for example:
+
+SELECT * 
+FROM products
+WHERE item LIKE '%Cheese%'
+AND Availability = 'In Stock';
+
+
+	2.	Retrieving Recipes
+	•	The recipes table has a handful of common meals with instructions.
+	•	The recipe_ingredients table links each recipe to its needed ingredients, the quantity, and measurement. For instance:
+
+SELECT r.name, ri.ingredient, ri.quantity, ri.measure
+FROM recipes r
+JOIN recipe_ingredients ri
+  ON r.recipe_id = ri.recipe_id
+WHERE r.name = 'Chicken Stir-Fry';
+
+
+	3.	Matching Ingredients to Products
+	•	Because recipe_ingredients.ingredient is just text, you can do a textual or partial match to find suitable products. For instance, if the recipe calls for “Chicken Breast,” you could do:
+
+SELECT p.*
+FROM products p
+JOIN recipe_ingredients ri
+  ON ri.ingredient = p.item
+JOIN recipes r
+  ON r.recipe_id = ri.recipe_id
+WHERE r.name = 'Chicken Stir-Fry';
+
+
+	•	If the names match exactly, you’ll find relevant products. If not (e.g., “Chicken Breast” vs. “Boneless Chicken Breast”), you could do a LIKE query (WHERE p.item LIKE '%Chicken Breast%').
+
+	4.	Scaling & Customization
+	•	Increase NUM_ITEMS_TO_INSERT for a bigger product catalog.
+	•	Add more recipes to the RECIPES list—each with ingredients and instructions.
+	•	Use fuzzy string matching (like Python’s difflib or other text-similarity libraries) if you want more flexible linking.
+
+This setup ensures you have:
+	•	A large dataset of food products with random attributes (price, brand, etc.).
+	•	A small curated list of recipes and their ingredients.
+	•	A schema that can be extended to support real-world e-commerce or recipe recommendation logic.

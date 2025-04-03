@@ -12,8 +12,19 @@ output_ingredients_tool_def = {
                 "ingredients": {
                     "type": "array",
                     "items": {
-                        "type": "string",
-                        "description": "A single ingredient from the recipe."
+                        "type": "object",
+                        "properties": {
+                            "ingredient": {
+                                "type": "string",
+                                "description": "A single ingredient from the recipe."
+                            },
+                            "quantity": {
+                                "type": "string",
+                                "description": "The quantity of the ingredient. Include units if applicable."
+                            },
+                        },
+                        "required": ["ingredient", "quantity"],
+                        "additionalProperties": False
                     }
                 }
             },

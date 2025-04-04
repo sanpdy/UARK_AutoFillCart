@@ -1,3 +1,6 @@
+import json
+import tkinter as tk
+from tkinter import filedialog
 from agent_definitions.agent_superclass import Agent
 
 output_ingredients_tool_def = {
@@ -16,7 +19,7 @@ output_ingredients_tool_def = {
                         "properties": {
                             "ingredient": {
                                 "type": "string",
-                                "description": "A single ingredient from the recipe."
+                                "description": "A single ingredient from the recipe. Omit adjectives related to prep work such as cutting, marinating, and withholding parts of the ingredient."
                             },
                             "quantity": {
                                 "type": "string",
@@ -38,7 +41,6 @@ output_ingredients_tool_def = {
 class IngredientExtractorAgent(Agent):
     def __init__(self, llm='gpt-4o-mini', llm_api_provider='openai'):
         system_prompt = "You are an ingredient extractor agent. Your task is to extract all ingredients from the given text."
-
         super().__init__(llm=llm, llm_api_provider=llm_api_provider, system_prompt=system_prompt)
         self.reset()
 
@@ -86,4 +88,5 @@ if __name__ == "__main__":
     agent = IngredientExtractorAgent()
     recipe = "1 cup of flour, 2 eggs, 1/2 cup of sugar"
     ingredients = agent.extract_ingredients_from_recipe(recipe)
-    print(ingredients)  # Output: ['1 cup of flour', '2 eggs', '1/2 cup of sugar']
+    print(json.dumps(ingredients, indent=2))
+    # Expected Output: [{'ingredient': 'flour', 'quantity': '1 cup'}, {'ingredient': 'eggs', 'quantity': '2'}, ...]

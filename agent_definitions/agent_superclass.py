@@ -23,7 +23,7 @@ class Agent:
         self.context = None
         self.reset_context()
 
-        # Store the skill library instantiated in main.py as an attribute of the Agent superclass
+        # Store the skill library instantiated in __main__.py as an attribute of the Agent superclass
         if skill_library_db is not None:
             # NOTE: Using a shared instance of the SkillLibraryDatabase class for now
             #  Disadvantages:

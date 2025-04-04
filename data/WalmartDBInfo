@@ -1,0 +1,515 @@
+# Walmart.com Shopping Available Data Field Names:
+Departments
+Price
+Brand
+Fulfillment Speed
+Availability
+Walmart Cash Offers
+Customer Rating
+Form
+Food Condition
+Flavor
+Meat Type
+Nutritional Content
+Special Diet Needs
+Preparation Method
+Container
+Packaged Meal Type
+Category
+Size Descriptor
+Retailer
+Gifting
+Benefit Programs
+
+When determining which aspects of a shopping list are most important to a typical Walmart.com shopper, it helps to consider both universal priorities (like price and availability) and personalized considerations (like dietary needs or brand loyalty). Below is a breakdown of the most impactful data fields, along with rationale for why they tend to matter for identifying priorities on a user’s shopping list. Fields not included here may still be relevant for certain products or niche shopper preferences, but these are the strongest “signal” fields that consistently drive decision-making.
+Most Impactful Fields
+Price
+Why It Matters: Price is almost always top-of-mind for shoppers: cost sensitivity and budget constraints make it a primary factor in deciding what goes into a cart.
+How It Helps: Identifies deals, helps filter out higher-priced options, and surfaces best-value items.
+
+Availability
+Why It Matters: Shoppers won’t bother with items that are out-of-stock or unavailable for shipping/pickup in their area.
+How It Helps: Ensures users see items they can actually purchase right now, reducing frustration and cart abandonment.
+
+Fulfillment Speed
+Why It Matters: Especially in an era of fast shipping and same-day pickup, how quickly an item can get to a shopper is a big deal. Many will prioritize items that arrive sooner or can be picked up the same day.
+How It Helps: Surfaces items that match the user’s urgency—e.g., next-day delivery, in-store pickup, curbside, etc.
+
+Brand
+Why It Matters: Brand loyalty is extremely common, particularly for groceries, personal care, and household products. Shoppers often prefer certain brands due to trust, past experience, or perceived quality.
+How It Helps: Quickly narrows choices for shoppers who want brand consistency or are open to “brand substitution” for cheaper options.
+
+Customer Rating
+Why It Matters: Social proof (ratings and reviews) strongly influences purchase decisions, especially for new or unfamiliar products.
+How It Helps: Allows filtering out low-rated or less-trusted items, helps highlight “top-rated” choices.
+
+Category
+Why It Matters: A broad organizational bucket (e.g., “groceries,” “home goods,” “electronics”) that helps segment the shopping list for easy navigation.
+How It Helps: Aids in structuring the search, grouping similar items together, and targeting relevant products.
+
+Special Diet Needs
+Why It Matters: Dietary restrictions and preferences (e.g., gluten-free, vegan, keto) are often non-negotiable for many shoppers.
+How It Helps: Filters products so users immediately see only items they can eat or want to eat, increasing satisfaction and reducing wasted time.
+
+Nutritional Content
+Why It Matters: Calorie counts, sugar/sodium content, macros, and more can be crucial for health-conscious shoppers.
+How It Helps: Nudges purchases aligned with health goals or medical restrictions—e.g., low-sodium diets, diabetic-friendly options.
+
+Walmart Cash Offers / Deals
+Why It Matters: Many shoppers actively look for deals, coupons, or loyalty program benefits to stretch their budget.
+How It Helps: Directly highlights opportunities to save money or earn rewards, incentivizing users to add certain items to their list.
+
+Useful Secondary Fields
+Form / Flavor / Meat Type / Preparation Method / Container / Packaged Meal Type
+
+Why They Might Matter:
+Form (e.g., powder vs. liquid detergent) or Flavor (e.g., barbecue vs. buffalo wings) can be important for product satisfaction.
+Meat Type (e.g., chicken vs. beef) or Preparation Method (e.g., oven-ready vs. microwavable) is relevant for certain food products.
+Container and Packaged Meal Type factor into convenience (e.g., single-serving vs. family-size).
+Use Case: More niche or product-specific. These attributes help narrow choices based on personal preferences but aren’t always “universal” drivers.
+
+Food Condition (fresh, frozen, canned)
+Why It Might Matter: Shoppers with strong preferences (e.g., fresh produce only, or long shelf life) pay close attention.
+Use Case: Particularly relevant for groceries; may not be top-tier for all products but crucial in certain categories.
+
+Size Descriptor
+Why It Might Matter: Bulk shoppers (e.g., large families) prefer big pack sizes, while single-person households want smaller quantities.
+Use Case: Important for convenience and cost considerations (price per unit).
+
+Benefit Programs (e.g., SNAP/EBT eligible)
+Why It Might Matter: Some shoppers need to ensure their purchases are covered by specific benefit programs.
+Use Case: Very relevant for that specific audience; not necessarily universal.
+
+Retailer
+Why It Might Matter: In a multi-merchant marketplace, a user might want to know who’s actually fulfilling the order (though on Walmart.com, this is often Walmart itself or an approved marketplace seller).
+Use Case: More about trust and shipping standards for third-party sellers.
+
+Gifting
+Why It Might Matter: If items are gifts, packaging or gift-wrapping can be a factor.
+Use Case: Only relevant in contexts where the shopper explicitly wants a gift option.
+
+Putting It All Together
+Core Drivers: Price, availability, fulfillment speed, brand, ratings, category, and special diet/nutrition are the “must-have” attributes for most shopping decisions.
+Extra Filters: Product-specific variables (like flavor, container, or size) become important depending on the product type (e.g., groceries vs. electronics).
+Niche Needs: Benefit programs, gifting options, or advanced details like “meat type” or “packaged meal type” can be essential for specific user segments.
+
+import sqlite3
+
+# 1. Connect to or create the SQLite database
+conn = sqlite3.connect('walmart.db')
+
+# 2. Create a cursor object
+cursor = conn.cursor()
+
+# 3. Create a table named "products" with columns matching your variables
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS products (
+    product_id INTEGER PRIMARY KEY AUTOINCREMENT,
+
+    -- Core fields
+    Departments TEXT,
+    Price REAL,
+    Brand TEXT,
+    FulfillmentSpeed TEXT,
+    Availability TEXT,
+    WalmartCashOffers TEXT,
+    CustomerRating REAL,
+
+    -- Additional grocery/food attributes
+    Form TEXT,
+    FoodCondition TEXT,
+    Flavor TEXT,
+    MeatType TEXT,
+    NutritionalContent TEXT,
+    SpecialDietNeeds TEXT,
+    PreparationMethod TEXT,
+    Container TEXT,
+    PackagedMealType TEXT,
+    
+    -- Category & size
+    Category TEXT,
+    SizeDescriptor TEXT,
+
+    -- Retailer & program specifics
+    Retailer TEXT,
+    Gifting TEXT,
+    BenefitPrograms TEXT
+);
+""")
+
+# 4. Commit changes and close the connection
+conn.commit()
+conn.close()
+
+print("Database and 'products' table created successfully.")
+
+Below is an expanded Python script that not only generates a large, randomized dataset of food products (similar to the previous examples) but also creates tables for recipes and recipe ingredients, allowing you to store common meal recipes and link them (textually) to the product catalog.
+
+In this setup:
+	•	products: Holds the large set of items (randomized categories, prices, availability, etc.).
+	•	recipes: Stores a curated set of common meal recipes (e.g., Spaghetti Marinara, Chicken Stir-Fry).
+	•	recipe_ingredients: Each row links one recipe to an ingredient name (text), along with a simple quantity and measure.
+
+Important Note: This example uses text-based matching between recipe_ingredients.ingredient and products.item. You can do partial or exact string matches when recommending products for each recipe. If you need perfect foreign-key references (e.g., each ingredient matched to a precise product row), you’ll need more controlled naming or a separate mapping step.
+
+⸻
+
+Full Python Script
+
+import sqlite3
+import random
+
+# -----------------------------------------------------------------------------
+# 1. DATA SOURCES
+# -----------------------------------------------------------------------------
+
+# Categories -> List of Items
+CATEGORIES = {
+    "Produce": [
+        "Apples", "Bananas", "Carrots", "Spinach", "Broccoli", "Lettuce", "Onions",
+        "Tomatoes", "Bell Peppers", "Cucumbers", "Grapes", "Strawberries", "Potatoes"
+    ],
+    "Dairy": [
+        "Milk", "Eggs", "Cheese", "Yogurt", "Butter", "Cottage Cheese", "Cream Cheese"
+    ],
+    "Meats": [
+        "Chicken Breast", "Ground Beef", "Pork Chops", "Bacon", "Steak", "Salmon",
+        "Shrimp", "Turkey", "Ham"
+    ],
+    "Pantry": [
+        "Rice", "Pasta", "Flour", "Sugar", "Olive Oil", "Baking Powder", "Peanut Butter",
+        "Jelly", "Cereal", "Oats", "Beans", "Canned Tuna"
+    ],
+    "Beverages": [
+        "Bottled Water", "Orange Juice", "Apple Juice", "Soda", "Sparkling Water",
+        "Coffee", "Tea Bags"
+    ],
+    "Frozen": [
+        "Frozen Pizza", "Frozen Vegetables", "Ice Cream", "Frozen Berries",
+        "Frozen French Fries"
+    ],
+    "Snacks": [
+        "Chips", "Cookies", "Crackers", "Popcorn", "Granola Bars", "Mixed Nuts"
+    ],
+    "Bakery": [
+        "Bread", "Bagels", "Muffins", "Donuts", "Tortillas", "Croissants"
+    ],
+    "Condiments & Sauces": [
+        "Salt", "Pepper", "Ketchup", "Mustard", "Mayonnaise", "Soy Sauce", "Vinegar",
+        "BBQ Sauce"
+    ]
+}
+
+BRANDS = [
+    "Great Value", "Member's Mark", "Organic Farms", "Kirkland",
+    "Heinz", "Del Monte", "Market Pantry", "Private Selection"
+]
+
+FULFILLMENT_SPEED_OPTIONS = ["Same Day", "Next Day", "Two Day", "Standard"]
+AVAILABILITY_OPTIONS = ["In Stock", "Out of Stock", "Limited Stock"]
+WALMART_CASH_OFFERS_OPTIONS = ["Yes", "No"]
+GIFTING_OPTIONS = ["No", "Gift Wrap Available"]
+BENEFIT_PROGRAMS_OPTIONS = ["N/A", "SNAP Eligible", "WIC Eligible", "Senior Discount"]
+
+# Common default fields (you can refine these)
+DEFAULT_DEPARTMENTS = "Grocery"
+DEFAULT_FORM = "N/A"
+DEFAULT_FOOD_CONDITION = "Fresh"
+DEFAULT_FLAVOR = "N/A"
+DEFAULT_MEAT_TYPE = "N/A"
+DEFAULT_NUTRITIONAL_CONTENT = "N/A"
+DEFAULT_SPECIAL_DIET_NEEDS = "None"
+DEFAULT_PREPARATION_METHOD = "N/A"
+DEFAULT_CONTAINER = "N/A"
+DEFAULT_PACKAGED_MEAL_TYPE = "N/A"
+DEFAULT_SIZE_DESCRIPTOR = "N/A"
+DEFAULT_RETAILER = "Walmart"
+
+# -----------------------------------------------------------------------------
+# 2. RECIPE DATA
+#    We'll keep a small curated list of recipes and their ingredients.
+#    The 'ingredients' are stored as (ingredient_name, quantity, measure).
+#    You can expand this list to include many more recipes.
+# -----------------------------------------------------------------------------
+
+RECIPES = [
+    {
+        "name": "Spaghetti Marinara",
+        "instructions": (
+            "Cook pasta according to package directions. Warm marinara sauce in a pan. "
+            "Combine pasta with sauce, then season with salt and pepper."
+        ),
+        "ingredients": [
+            ("Pasta", 8, "oz"), 
+            ("Olive Oil", 2, "tbsp"), 
+            ("Salt", 1, "tsp"), 
+            ("Pepper", 0.5, "tsp"),
+            ("Tomatoes", 2, "whole (optional garnish)"),
+            ("Cheese", 0.25, "cup (optional)")
+        ]
+    },
+    {
+        "name": "Chicken Stir-Fry",
+        "instructions": (
+            "Heat oil in a wok or pan. Stir-fry chicken pieces until cooked. "
+            "Add vegetables, soy sauce, and spices. Serve with rice."
+        ),
+        "ingredients": [
+            ("Chicken Breast", 1, "lb"),
+            ("Bell Peppers", 2, "whole"),
+            ("Onions", 1, "whole"),
+            ("Soy Sauce", 2, "tbsp"),
+            ("Rice", 1, "cup (uncooked)"),
+            ("Olive Oil", 1, "tbsp")
+        ]
+    },
+    {
+        "name": "Grilled Cheese Sandwich",
+        "instructions": (
+            "Butter two slices of bread. Place cheese slices between them. "
+            "Grill in a pan until golden brown on both sides."
+        ),
+        "ingredients": [
+            ("Bread", 2, "slices"),
+            ("Butter", 1, "tbsp"),
+            ("Cheese", 2, "slices")
+        ]
+    },
+    {
+        "name": "Garden Salad",
+        "instructions": (
+            "Chop lettuce, tomatoes, cucumbers, and onions. Toss in a bowl "
+            "with dressing. Top with croutons or cheese if desired."
+        ),
+        "ingredients": [
+            ("Lettuce", 1, "head"),
+            ("Tomatoes", 2, "whole"),
+            ("Cucumbers", 1, "whole"),
+            ("Onions", 0.5, "whole"),
+            ("Salt", 0.25, "tsp"),
+            ("Pepper", 0.25, "tsp")
+        ]
+    },
+    {
+        "name": "Pancakes",
+        "instructions": (
+            "Mix flour, sugar, baking powder, milk, and eggs into a batter. "
+            "Cook on a greased griddle until golden on both sides."
+        ),
+        "ingredients": [
+            ("Flour", 1, "cup"),
+            ("Sugar", 2, "tbsp"),
+            ("Baking Powder", 2, "tsp"),
+            ("Milk", 1, "cup"),
+            ("Eggs", 1, "whole"),
+            ("Butter", 1, "tbsp (for greasing)")
+        ]
+    }
+]
+
+# 3. Decide how many product items you want in your dataset
+NUM_ITEMS_TO_INSERT = 300  # Increase or decrease as desired
+
+# -----------------------------------------------------------------------------
+# 4. CREATE OR CONNECT TO THE DATABASE
+# -----------------------------------------------------------------------------
+conn = sqlite3.connect("walmart.db")
+cursor = conn.cursor()
+
+# -----------------------------------------------------------------------------
+# 5. CREATE TABLES
+# -----------------------------------------------------------------------------
+
+# -- products table --
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS products (
+    product_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    item TEXT,
+
+    Departments TEXT,
+    Price REAL,
+    Brand TEXT,
+    FulfillmentSpeed TEXT,
+    Availability TEXT,
+    WalmartCashOffers TEXT,
+    CustomerRating REAL,
+    Form TEXT,
+    FoodCondition TEXT,
+    Flavor TEXT,
+    MeatType TEXT,
+    NutritionalContent TEXT,
+    SpecialDietNeeds TEXT,
+    PreparationMethod TEXT,
+    Container TEXT,
+    PackagedMealType TEXT,
+    Category TEXT,
+    SizeDescriptor TEXT,
+    Retailer TEXT,
+    Gifting TEXT,
+    BenefitPrograms TEXT
+);
+""")
+
+# -- recipes table --
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS recipes (
+    recipe_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT,
+    instructions TEXT
+);
+""")
+
+# -- recipe_ingredients table --
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS recipe_ingredients (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    recipe_id INTEGER,
+    ingredient TEXT,
+    quantity REAL,
+    measure TEXT,
+    FOREIGN KEY (recipe_id) REFERENCES recipes(recipe_id)
+);
+""")
+
+conn.commit()
+
+# -----------------------------------------------------------------------------
+# 6. POPULATE THE PRODUCTS TABLE WITH RANDOM DATA
+# -----------------------------------------------------------------------------
+
+def generate_random_product():
+    """Return a tuple of random product data matching the products schema."""
+    category = random.choice(list(CATEGORIES.keys()))
+    item_name = random.choice(CATEGORIES[category])
+    
+    price = round(random.uniform(1.00, 20.00), 2)
+    brand = random.choice(BRANDS)
+    fulfillment_speed = random.choice(FULFILLMENT_SPEED_OPTIONS)
+    availability = random.choice(AVAILABILITY_OPTIONS)
+    walmart_cash_offers = random.choice(WALMART_CASH_OFFERS_OPTIONS)
+    customer_rating = round(random.uniform(1.0, 5.0), 1)
+    gifting = random.choice(GIFTING_OPTIONS)
+    benefit_programs = random.choice(BENEFIT_PROGRAMS_OPTIONS)
+    
+    return (
+        item_name,
+        DEFAULT_DEPARTMENTS,
+        price,
+        brand,
+        fulfillment_speed,
+        availability,
+        walmart_cash_offers,
+        customer_rating,
+        DEFAULT_FORM,
+        DEFAULT_FOOD_CONDITION,
+        DEFAULT_FLAVOR,
+        DEFAULT_MEAT_TYPE,
+        DEFAULT_NUTRITIONAL_CONTENT,
+        DEFAULT_SPECIAL_DIET_NEEDS,
+        DEFAULT_PREPARATION_METHOD,
+        DEFAULT_CONTAINER,
+        DEFAULT_PACKAGED_MEAL_TYPE,
+        category,
+        DEFAULT_SIZE_DESCRIPTOR,
+        DEFAULT_RETAILER,
+        gifting,
+        benefit_programs
+    )
+
+insert_sql = """
+INSERT INTO products (
+    item,
+    Departments, Price, Brand, FulfillmentSpeed, Availability, WalmartCashOffers,
+    CustomerRating, Form, FoodCondition, Flavor, MeatType, NutritionalContent,
+    SpecialDietNeeds, PreparationMethod, Container, PackagedMealType,
+    Category, SizeDescriptor, Retailer, Gifting, BenefitPrograms
+) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+"""
+
+for _ in range(NUM_ITEMS_TO_INSERT):
+    cursor.execute(insert_sql, generate_random_product())
+
+conn.commit()
+
+# -----------------------------------------------------------------------------
+# 7. POPULATE THE RECIPES AND RECIPE_INGREDIENTS TABLES
+# -----------------------------------------------------------------------------
+
+# Insert recipes
+recipe_insert_sql = """
+INSERT INTO recipes (name, instructions)
+VALUES (?, ?)
+"""
+
+recipe_ingredient_insert_sql = """
+INSERT INTO recipe_ingredients (recipe_id, ingredient, quantity, measure)
+VALUES (?, ?, ?, ?)
+"""
+
+# Insert each recipe and its associated ingredients
+for recipe in RECIPES:
+    # Insert recipe record
+    cursor.execute(recipe_insert_sql, (recipe["name"], recipe["instructions"]))
+    inserted_recipe_id = cursor.lastrowid  # get the auto-generated recipe_id
+    
+    # Insert each ingredient for this recipe
+    for (ingredient_name, quantity, measure) in recipe["ingredients"]:
+        cursor.execute(recipe_ingredient_insert_sql, (inserted_recipe_id, ingredient_name, quantity, measure))
+
+conn.commit()
+
+# -----------------------------------------------------------------------------
+# 8. FINISH
+# -----------------------------------------------------------------------------
+conn.close()
+
+print(f"Inserted {NUM_ITEMS_TO_INSERT} products, plus {len(RECIPES)} recipes into the database.")
+
+
+
+⸻
+
+How to Use This Database
+	1.	Exploring Products
+	•	The products table contains NUM_ITEMS_TO_INSERT rows of random grocery items. You can query them to see items that match a recipe’s ingredient list using text matching, for example:
+
+SELECT * 
+FROM products
+WHERE item LIKE '%Cheese%'
+AND Availability = 'In Stock';
+
+
+	2.	Retrieving Recipes
+	•	The recipes table has a handful of common meals with instructions.
+	•	The recipe_ingredients table links each recipe to its needed ingredients, the quantity, and measurement. For instance:
+
+SELECT r.name, ri.ingredient, ri.quantity, ri.measure
+FROM recipes r
+JOIN recipe_ingredients ri
+  ON r.recipe_id = ri.recipe_id
+WHERE r.name = 'Chicken Stir-Fry';
+
+
+	3.	Matching Ingredients to Products
+	•	Because recipe_ingredients.ingredient is just text, you can do a textual or partial match to find suitable products. For instance, if the recipe calls for “Chicken Breast,” you could do:
+
+SELECT p.*
+FROM products p
+JOIN recipe_ingredients ri
+  ON ri.ingredient = p.item
+JOIN recipes r
+  ON r.recipe_id = ri.recipe_id
+WHERE r.name = 'Chicken Stir-Fry';
+
+
+	•	If the names match exactly, you’ll find relevant products. If not (e.g., “Chicken Breast” vs. “Boneless Chicken Breast”), you could do a LIKE query (WHERE p.item LIKE '%Chicken Breast%').
+
+	4.	Scaling & Customization
+	•	Increase NUM_ITEMS_TO_INSERT for a bigger product catalog.
+	•	Add more recipes to the RECIPES list—each with ingredients and instructions.
+	•	Use fuzzy string matching (like Python’s difflib or other text-similarity libraries) if you want more flexible linking.
+
+This setup ensures you have:
+	•	A large dataset of food products with random attributes (price, brand, etc.).
+	•	A small curated list of recipes and their ingredients.
+	•	A schema that can be extended to support real-world e-commerce or recipe recommendation logic.

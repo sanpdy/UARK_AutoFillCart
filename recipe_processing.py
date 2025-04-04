@@ -36,10 +36,11 @@ def import_file_and_extract_ingredients():
         # Use the recipe text as input for the ingredient extraction agent.
         agent = IngredientExtractorAgent()
         ingredients = agent.extract_ingredients_from_recipe(recipe)
-        print(json.dumps(ingredients, indent=2))
+        return ingredients
     else:
         print("No file selected.")
 
 
 if __name__ == "__main__":
-    import_file_and_extract_ingredients()
+    ingredients = import_file_and_extract_ingredients()
+    print(json.dumps(ingredients, indent=2))

@@ -1,0 +1,301 @@
+product_id,item,Departments,Price,Brand,FulfillmentSpeed,Availability,WalmartCashOffers,CustomerRating,Form,FoodCondition,Flavor,MeatType,NutritionalContent,SpecialDietNeeds,PreparationMethod,Container,PackagedMealType,Category,SizeDescriptor,Retailer,Gifting,BenefitPrograms
+1,Sugar,Grocery,13.79,Heinz,Next Day,Limited Stock,Yes,3.0,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Pantry,N/A,Walmart,Gift Wrap Available,SNAP Eligible
+2,Butter,Grocery,17.07,Heinz,Standard,Out of Stock,Yes,2.4,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Dairy,N/A,Walmart,Gift Wrap Available,N/A
+3,Frozen Vegetables,Grocery,15.72,Kirkland,Standard,In Stock,Yes,3.0,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Frozen,N/A,Walmart,No,Senior Discount
+4,Salt,Grocery,19.66,Member's Mark,Standard,In Stock,No,2.2,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Condiments & Sauces,N/A,Walmart,No,N/A
+5,Lettuce,Grocery,16.51,Great Value,Next Day,In Stock,Yes,1.3,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Produce,N/A,Walmart,Gift Wrap Available,N/A
+6,Butter,Grocery,2.96,Organic Farms,Two Day,In Stock,Yes,3.1,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Dairy,N/A,Walmart,No,Senior Discount
+7,Bagels,Grocery,16.59,Heinz,Same Day,Limited Stock,No,2.6,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Bakery,N/A,Walmart,No,N/A
+8,Frozen Pizza,Grocery,3.91,Private Selection,Two Day,In Stock,Yes,2.1,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Frozen,N/A,Walmart,Gift Wrap Available,Senior Discount
+9,Yogurt,Grocery,16.8,Organic Farms,Same Day,In Stock,Yes,1.5,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Dairy,N/A,Walmart,Gift Wrap Available,SNAP Eligible
+10,Yogurt,Grocery,11.47,Heinz,Same Day,In Stock,Yes,2.1,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Dairy,N/A,Walmart,No,WIC Eligible
+11,Cheese,Grocery,8.29,Kirkland,Standard,Out of Stock,Yes,1.4,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Dairy,N/A,Walmart,No,WIC Eligible
+12,Mixed Nuts,Grocery,11.74,Kirkland,Next Day,Out of Stock,No,3.3,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Snacks,N/A,Walmart,No,Senior Discount
+13,Oats,Grocery,2.43,Private Selection,Two Day,In Stock,Yes,1.7,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Pantry,N/A,Walmart,No,N/A
+14,Eggs,Grocery,9.64,Market Pantry,Standard,Out of Stock,No,4.2,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Dairy,N/A,Walmart,No,SNAP Eligible
+15,Crackers,Grocery,5.59,Organic Farms,Two Day,Limited Stock,No,4.7,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Snacks,N/A,Walmart,Gift Wrap Available,N/A
+16,Cookies,Grocery,3.44,Great Value,Next Day,Out of Stock,No,4.9,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Snacks,N/A,Walmart,Gift Wrap Available,Senior Discount
+17,Pork Chops,Grocery,15.19,Market Pantry,Same Day,Out of Stock,No,3.0,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Meats,N/A,Walmart,No,WIC Eligible
+18,Spinach,Grocery,18.02,Great Value,Standard,Out of Stock,No,4.7,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Produce,N/A,Walmart,No,Senior Discount
+19,Sugar,Grocery,15.74,Private Selection,Standard,In Stock,Yes,4.4,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Pantry,N/A,Walmart,No,WIC Eligible
+20,Crackers,Grocery,11.82,Market Pantry,Standard,Out of Stock,No,1.8,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Snacks,N/A,Walmart,No,N/A
+21,Bananas,Grocery,7.76,Del Monte,Next Day,In Stock,No,2.4,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Produce,N/A,Walmart,No,N/A
+22,Pasta,Grocery,18.09,Market Pantry,Standard,In Stock,Yes,3.1,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Pantry,N/A,Walmart,No,WIC Eligible
+23,Crackers,Grocery,6.07,Market Pantry,Two Day,Limited Stock,No,2.3,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Snacks,N/A,Walmart,No,WIC Eligible
+24,Tomatoes,Grocery,8.51,Del Monte,Standard,Limited Stock,Yes,1.1,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Produce,N/A,Walmart,No,N/A
+25,Bagels,Grocery,2.71,Kirkland,Next Day,Limited Stock,No,3.6,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Bakery,N/A,Walmart,No,Senior Discount
+26,Ham,Grocery,2.57,Private Selection,Same Day,Out of Stock,Yes,1.0,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Meats,N/A,Walmart,Gift Wrap Available,SNAP Eligible
+27,Frozen Vegetables,Grocery,6.06,Private Selection,Next Day,In Stock,Yes,4.5,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Frozen,N/A,Walmart,Gift Wrap Available,SNAP Eligible
+28,Frozen French Fries,Grocery,16.57,Market Pantry,Next Day,Limited Stock,No,1.7,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Frozen,N/A,Walmart,Gift Wrap Available,SNAP Eligible
+29,Pepper,Grocery,2.95,Market Pantry,Same Day,In Stock,No,2.4,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Condiments & Sauces,N/A,Walmart,Gift Wrap Available,Senior Discount
+30,Apple Juice,Grocery,7.05,Great Value,Standard,Limited Stock,Yes,2.2,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Beverages,N/A,Walmart,No,WIC Eligible
+31,Cookies,Grocery,17.28,Private Selection,Same Day,In Stock,No,2.4,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Snacks,N/A,Walmart,Gift Wrap Available,WIC Eligible
+32,Bottled Water,Grocery,4.35,Del Monte,Same Day,In Stock,Yes,4.6,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Beverages,N/A,Walmart,No,N/A
+33,Bacon,Grocery,16.84,Del Monte,Two Day,In Stock,No,4.3,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Meats,N/A,Walmart,Gift Wrap Available,SNAP Eligible
+34,Frozen Vegetables,Grocery,6.87,Kirkland,Next Day,Limited Stock,No,2.7,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Frozen,N/A,Walmart,No,Senior Discount
+35,Donuts,Grocery,17.15,Great Value,Next Day,Limited Stock,Yes,3.2,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Bakery,N/A,Walmart,No,SNAP Eligible
+36,BBQ Sauce,Grocery,9.97,Kirkland,Standard,Limited Stock,Yes,3.7,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Condiments & Sauces,N/A,Walmart,Gift Wrap Available,WIC Eligible
+37,Mixed Nuts,Grocery,1.83,Market Pantry,Same Day,Out of Stock,No,3.6,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Snacks,N/A,Walmart,Gift Wrap Available,Senior Discount
+38,Grapes,Grocery,13.28,Del Monte,Two Day,Out of Stock,Yes,3.8,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Produce,N/A,Walmart,Gift Wrap Available,WIC Eligible
+39,Flour,Grocery,15.14,Market Pantry,Next Day,In Stock,No,1.5,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Pantry,N/A,Walmart,No,WIC Eligible
+40,Frozen Pizza,Grocery,11.96,Great Value,Standard,In Stock,Yes,3.1,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Frozen,N/A,Walmart,Gift Wrap Available,WIC Eligible
+41,Donuts,Grocery,8.7,Great Value,Two Day,Out of Stock,Yes,3.2,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Bakery,N/A,Walmart,No,Senior Discount
+42,Frozen Vegetables,Grocery,6.13,Member's Mark,Standard,In Stock,Yes,4.4,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Frozen,N/A,Walmart,No,WIC Eligible
+43,Frozen Vegetables,Grocery,19.57,Market Pantry,Two Day,Limited Stock,Yes,4.2,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Frozen,N/A,Walmart,No,SNAP Eligible
+44,Pasta,Grocery,8.33,Member's Mark,Two Day,Out of Stock,No,2.4,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Pantry,N/A,Walmart,No,WIC Eligible
+45,Croissants,Grocery,12.99,Private Selection,Next Day,Out of Stock,Yes,1.0,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Bakery,N/A,Walmart,No,SNAP Eligible
+46,Olive Oil,Grocery,13.51,Great Value,Standard,Out of Stock,Yes,2.1,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Pantry,N/A,Walmart,Gift Wrap Available,SNAP Eligible
+47,Apples,Grocery,4.68,Organic Farms,Standard,Out of Stock,Yes,1.4,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Produce,N/A,Walmart,Gift Wrap Available,N/A
+48,Popcorn,Grocery,5.81,Del Monte,Next Day,Out of Stock,Yes,3.5,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Snacks,N/A,Walmart,No,Senior Discount
+49,Ground Beef,Grocery,14.67,Great Value,Two Day,In Stock,Yes,3.8,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Meats,N/A,Walmart,Gift Wrap Available,SNAP Eligible
+50,Muffins,Grocery,4.4,Member's Mark,Standard,In Stock,Yes,3.9,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Bakery,N/A,Walmart,No,Senior Discount
+51,Muffins,Grocery,13.47,Del Monte,Same Day,In Stock,Yes,2.7,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Bakery,N/A,Walmart,Gift Wrap Available,N/A
+52,Lettuce,Grocery,15.43,Del Monte,Standard,Out of Stock,No,2.5,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Produce,N/A,Walmart,No,N/A
+53,Cheese,Grocery,6.86,Del Monte,Two Day,In Stock,Yes,1.2,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Dairy,N/A,Walmart,No,SNAP Eligible
+54,Popcorn,Grocery,13.95,Great Value,Two Day,Limited Stock,Yes,1.6,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Snacks,N/A,Walmart,No,Senior Discount
+55,Frozen Berries,Grocery,7.13,Heinz,Next Day,Limited Stock,Yes,2.5,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Frozen,N/A,Walmart,Gift Wrap Available,SNAP Eligible
+56,Tortillas,Grocery,5.59,Member's Mark,Two Day,Limited Stock,No,2.9,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Bakery,N/A,Walmart,Gift Wrap Available,N/A
+57,Popcorn,Grocery,11.44,Member's Mark,Next Day,In Stock,No,2.8,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Snacks,N/A,Walmart,Gift Wrap Available,Senior Discount
+58,Bottled Water,Grocery,14.64,Member's Mark,Standard,Out of Stock,Yes,3.6,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Beverages,N/A,Walmart,No,Senior Discount
+59,Pasta,Grocery,11.94,Private Selection,Standard,Out of Stock,No,4.6,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Pantry,N/A,Walmart,No,Senior Discount
+60,Vinegar,Grocery,2.81,Organic Farms,Next Day,Out of Stock,Yes,2.5,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Condiments & Sauces,N/A,Walmart,No,Senior Discount
+61,Cheese,Grocery,4.13,Private Selection,Next Day,Out of Stock,No,3.0,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Dairy,N/A,Walmart,No,N/A
+62,Bell Peppers,Grocery,2.23,Member's Mark,Standard,Out of Stock,No,3.3,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Produce,N/A,Walmart,Gift Wrap Available,Senior Discount
+63,Frozen Pizza,Grocery,16.47,Market Pantry,Same Day,Out of Stock,No,4.9,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Frozen,N/A,Walmart,Gift Wrap Available,Senior Discount
+64,Salt,Grocery,8.82,Kirkland,Two Day,In Stock,Yes,4.4,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Condiments & Sauces,N/A,Walmart,No,N/A
+65,Bananas,Grocery,5.22,Del Monte,Next Day,Limited Stock,No,1.3,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Produce,N/A,Walmart,No,SNAP Eligible
+66,Frozen French Fries,Grocery,15.21,Member's Mark,Next Day,Out of Stock,No,2.7,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Frozen,N/A,Walmart,Gift Wrap Available,N/A
+67,Cottage Cheese,Grocery,12.79,Member's Mark,Two Day,In Stock,Yes,1.5,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Dairy,N/A,Walmart,No,SNAP Eligible
+68,Salmon,Grocery,16.03,Private Selection,Same Day,In Stock,Yes,1.7,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Meats,N/A,Walmart,Gift Wrap Available,WIC Eligible
+69,Vinegar,Grocery,15.59,Market Pantry,Standard,Limited Stock,Yes,1.8,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Condiments & Sauces,N/A,Walmart,No,N/A
+70,Mixed Nuts,Grocery,3.13,Organic Farms,Same Day,In Stock,No,5.0,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Snacks,N/A,Walmart,Gift Wrap Available,Senior Discount
+71,Eggs,Grocery,14.13,Member's Mark,Standard,Out of Stock,No,2.4,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Dairy,N/A,Walmart,Gift Wrap Available,N/A
+72,Salmon,Grocery,18.84,Del Monte,Same Day,Out of Stock,Yes,2.0,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Meats,N/A,Walmart,No,WIC Eligible
+73,Ham,Grocery,10.71,Del Monte,Same Day,In Stock,Yes,4.1,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Meats,N/A,Walmart,Gift Wrap Available,N/A
+74,Salmon,Grocery,2.68,Del Monte,Standard,Out of Stock,Yes,1.4,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Meats,N/A,Walmart,Gift Wrap Available,N/A
+75,Chips,Grocery,3.03,Great Value,Two Day,Out of Stock,No,3.4,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Snacks,N/A,Walmart,Gift Wrap Available,Senior Discount
+76,Bottled Water,Grocery,12.37,Private Selection,Next Day,Out of Stock,Yes,2.8,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Beverages,N/A,Walmart,No,SNAP Eligible
+77,Mustard,Grocery,17.24,Private Selection,Same Day,Out of Stock,No,4.9,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Condiments & Sauces,N/A,Walmart,Gift Wrap Available,SNAP Eligible
+78,Jelly,Grocery,11.48,Market Pantry,Standard,Limited Stock,No,2.0,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Pantry,N/A,Walmart,No,WIC Eligible
+79,Bell Peppers,Grocery,17.03,Private Selection,Same Day,Out of Stock,No,1.4,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Produce,N/A,Walmart,Gift Wrap Available,Senior Discount
+80,Salmon,Grocery,16.42,Kirkland,Two Day,In Stock,Yes,1.7,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Meats,N/A,Walmart,Gift Wrap Available,WIC Eligible
+81,Carrots,Grocery,11.58,Del Monte,Two Day,Limited Stock,Yes,2.1,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Produce,N/A,Walmart,No,Senior Discount
+82,Ice Cream,Grocery,16.09,Del Monte,Standard,Out of Stock,No,1.8,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Frozen,N/A,Walmart,Gift Wrap Available,Senior Discount
+83,Steak,Grocery,7.73,Member's Mark,Same Day,Limited Stock,Yes,4.5,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Meats,N/A,Walmart,Gift Wrap Available,SNAP Eligible
+84,Mixed Nuts,Grocery,15.73,Organic Farms,Two Day,Limited Stock,Yes,3.5,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Snacks,N/A,Walmart,No,SNAP Eligible
+85,Spinach,Grocery,17.06,Del Monte,Two Day,Out of Stock,Yes,2.2,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Produce,N/A,Walmart,Gift Wrap Available,Senior Discount
+86,Salt,Grocery,3.4,Market Pantry,Standard,In Stock,No,2.9,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Condiments & Sauces,N/A,Walmart,No,WIC Eligible
+87,Bacon,Grocery,14.03,Private Selection,Same Day,In Stock,Yes,4.4,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Meats,N/A,Walmart,No,Senior Discount
+88,Eggs,Grocery,17.25,Private Selection,Next Day,Limited Stock,Yes,1.0,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Dairy,N/A,Walmart,No,Senior Discount
+89,Bread,Grocery,3.32,Private Selection,Next Day,In Stock,No,3.7,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Bakery,N/A,Walmart,Gift Wrap Available,Senior Discount
+90,Ice Cream,Grocery,4.95,Kirkland,Standard,In Stock,No,1.2,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Frozen,N/A,Walmart,No,Senior Discount
+91,Ham,Grocery,15.86,Member's Mark,Same Day,Out of Stock,No,2.0,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Meats,N/A,Walmart,No,WIC Eligible
+92,Tortillas,Grocery,6.14,Market Pantry,Next Day,In Stock,Yes,3.1,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Bakery,N/A,Walmart,Gift Wrap Available,Senior Discount
+93,Ketchup,Grocery,6.6,Heinz,Same Day,In Stock,Yes,1.3,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Condiments & Sauces,N/A,Walmart,Gift Wrap Available,WIC Eligible
+94,Frozen Vegetables,Grocery,17.43,Member's Mark,Standard,Limited Stock,Yes,2.2,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Frozen,N/A,Walmart,Gift Wrap Available,WIC Eligible
+95,Shrimp,Grocery,11.7,Del Monte,Two Day,Out of Stock,Yes,1.1,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Meats,N/A,Walmart,Gift Wrap Available,WIC Eligible
+96,Milk,Grocery,4.8,Private Selection,Standard,Out of Stock,No,2.9,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Dairy,N/A,Walmart,Gift Wrap Available,WIC Eligible
+97,Bread,Grocery,7.54,Private Selection,Two Day,In Stock,Yes,2.6,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Bakery,N/A,Walmart,Gift Wrap Available,N/A
+98,Vinegar,Grocery,10.88,Private Selection,Standard,Limited Stock,Yes,3.6,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Condiments & Sauces,N/A,Walmart,Gift Wrap Available,Senior Discount
+99,Bell Peppers,Grocery,14.04,Kirkland,Next Day,In Stock,No,1.9,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Produce,N/A,Walmart,Gift Wrap Available,Senior Discount
+100,Popcorn,Grocery,9.11,Heinz,Same Day,In Stock,No,2.0,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Snacks,N/A,Walmart,Gift Wrap Available,WIC Eligible
+101,Olive Oil,Grocery,2.29,Market Pantry,Standard,Limited Stock,No,5.0,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Pantry,N/A,Walmart,No,WIC Eligible
+102,Bread,Grocery,1.93,Great Value,Same Day,In Stock,No,4.1,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Bakery,N/A,Walmart,Gift Wrap Available,SNAP Eligible
+103,Broccoli,Grocery,11.3,Del Monte,Same Day,Out of Stock,No,1.1,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Produce,N/A,Walmart,No,SNAP Eligible
+104,Tea Bags,Grocery,1.27,Great Value,Two Day,Out of Stock,Yes,3.8,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Beverages,N/A,Walmart,Gift Wrap Available,WIC Eligible
+105,Ice Cream,Grocery,6.66,Heinz,Same Day,In Stock,Yes,4.4,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Frozen,N/A,Walmart,No,N/A
+106,Frozen Vegetables,Grocery,2.05,Del Monte,Next Day,In Stock,No,4.3,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Frozen,N/A,Walmart,Gift Wrap Available,Senior Discount
+107,Salt,Grocery,4.38,Private Selection,Standard,In Stock,Yes,2.4,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Condiments & Sauces,N/A,Walmart,No,Senior Discount
+108,Salmon,Grocery,15.18,Great Value,Two Day,Out of Stock,No,3.0,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Meats,N/A,Walmart,No,Senior Discount
+109,Frozen Berries,Grocery,7.92,Private Selection,Next Day,Limited Stock,Yes,3.1,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Frozen,N/A,Walmart,Gift Wrap Available,SNAP Eligible
+110,Vinegar,Grocery,16.41,Heinz,Same Day,Out of Stock,No,2.8,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Condiments & Sauces,N/A,Walmart,Gift Wrap Available,SNAP Eligible
+111,Rice,Grocery,16.45,Private Selection,Two Day,In Stock,Yes,4.8,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Pantry,N/A,Walmart,No,WIC Eligible
+112,Sparkling Water,Grocery,7.84,Del Monte,Two Day,Out of Stock,No,2.7,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Beverages,N/A,Walmart,Gift Wrap Available,WIC Eligible
+113,Potatoes,Grocery,19.03,Organic Farms,Same Day,Out of Stock,No,3.0,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Produce,N/A,Walmart,No,N/A
+114,Ham,Grocery,10.08,Member's Mark,Two Day,Out of Stock,Yes,2.4,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Meats,N/A,Walmart,Gift Wrap Available,WIC Eligible
+115,Orange Juice,Grocery,18.18,Heinz,Same Day,Out of Stock,Yes,1.6,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Beverages,N/A,Walmart,Gift Wrap Available,WIC Eligible
+116,Olive Oil,Grocery,10.72,Organic Farms,Two Day,In Stock,No,2.3,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Pantry,N/A,Walmart,No,SNAP Eligible
+117,Granola Bars,Grocery,18.48,Organic Farms,Two Day,Limited Stock,No,5.0,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Snacks,N/A,Walmart,Gift Wrap Available,WIC Eligible
+118,Tortillas,Grocery,7.84,Market Pantry,Standard,In Stock,Yes,4.0,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Bakery,N/A,Walmart,No,WIC Eligible
+119,Cookies,Grocery,8.44,Heinz,Two Day,Out of Stock,No,1.0,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Snacks,N/A,Walmart,No,WIC Eligible
+120,Vinegar,Grocery,7.8,Market Pantry,Same Day,Out of Stock,No,3.9,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Condiments & Sauces,N/A,Walmart,Gift Wrap Available,Senior Discount
+121,Sparkling Water,Grocery,8.99,Del Monte,Two Day,Limited Stock,No,3.8,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Beverages,N/A,Walmart,No,Senior Discount
+122,Olive Oil,Grocery,10.29,Great Value,Same Day,Out of Stock,No,1.9,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Pantry,N/A,Walmart,Gift Wrap Available,Senior Discount
+123,Mayonnaise,Grocery,12.44,Kirkland,Next Day,Out of Stock,No,1.8,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Condiments & Sauces,N/A,Walmart,Gift Wrap Available,N/A
+124,Frozen Berries,Grocery,13.75,Kirkland,Standard,Out of Stock,No,2.9,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Frozen,N/A,Walmart,No,N/A
+125,Canned Tuna,Grocery,9.3,Heinz,Same Day,Out of Stock,No,4.3,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Pantry,N/A,Walmart,Gift Wrap Available,WIC Eligible
+126,Onions,Grocery,11.3,Organic Farms,Two Day,Out of Stock,Yes,3.5,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Produce,N/A,Walmart,Gift Wrap Available,Senior Discount
+127,Soy Sauce,Grocery,6.2,Member's Mark,Two Day,Limited Stock,Yes,4.1,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Condiments & Sauces,N/A,Walmart,No,SNAP Eligible
+128,Mixed Nuts,Grocery,2.63,Organic Farms,Same Day,In Stock,No,3.8,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Snacks,N/A,Walmart,No,SNAP Eligible
+129,Ground Beef,Grocery,2.5,Del Monte,Same Day,Out of Stock,Yes,1.3,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Meats,N/A,Walmart,Gift Wrap Available,SNAP Eligible
+130,Donuts,Grocery,12.25,Private Selection,Same Day,Out of Stock,No,3.2,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Bakery,N/A,Walmart,No,Senior Discount
+131,Bottled Water,Grocery,2.61,Great Value,Two Day,Limited Stock,No,1.5,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Beverages,N/A,Walmart,Gift Wrap Available,SNAP Eligible
+132,Broccoli,Grocery,1.33,Member's Mark,Standard,Limited Stock,Yes,2.5,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Produce,N/A,Walmart,Gift Wrap Available,Senior Discount
+133,Milk,Grocery,16.93,Del Monte,Next Day,Limited Stock,No,4.7,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Dairy,N/A,Walmart,Gift Wrap Available,SNAP Eligible
+134,Cream Cheese,Grocery,2.76,Member's Mark,Two Day,Limited Stock,Yes,1.5,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Dairy,N/A,Walmart,Gift Wrap Available,N/A
+135,Cream Cheese,Grocery,3.57,Market Pantry,Standard,Limited Stock,Yes,3.5,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Dairy,N/A,Walmart,No,N/A
+136,Salmon,Grocery,7.2,Private Selection,Same Day,Limited Stock,No,1.4,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Meats,N/A,Walmart,Gift Wrap Available,N/A
+137,Tortillas,Grocery,1.28,Organic Farms,Two Day,In Stock,Yes,3.0,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Bakery,N/A,Walmart,Gift Wrap Available,N/A
+138,Butter,Grocery,8.31,Great Value,Standard,In Stock,Yes,1.0,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Dairy,N/A,Walmart,No,N/A
+139,Bottled Water,Grocery,13.34,Kirkland,Next Day,In Stock,Yes,5.0,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Beverages,N/A,Walmart,Gift Wrap Available,Senior Discount
+140,Frozen Berries,Grocery,8.7,Market Pantry,Standard,Out of Stock,No,1.8,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Frozen,N/A,Walmart,No,N/A
+141,Rice,Grocery,12.83,Del Monte,Next Day,Out of Stock,Yes,3.7,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Pantry,N/A,Walmart,No,Senior Discount
+142,Mixed Nuts,Grocery,16.25,Market Pantry,Same Day,Out of Stock,No,1.6,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Snacks,N/A,Walmart,No,N/A
+143,Donuts,Grocery,19.37,Private Selection,Standard,Out of Stock,Yes,3.3,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Bakery,N/A,Walmart,No,Senior Discount
+144,Flour,Grocery,4.22,Great Value,Same Day,Limited Stock,No,2.9,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Pantry,N/A,Walmart,No,SNAP Eligible
+145,Salmon,Grocery,3.16,Del Monte,Next Day,Out of Stock,Yes,4.9,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Meats,N/A,Walmart,Gift Wrap Available,N/A
+146,Turkey,Grocery,7.59,Kirkland,Next Day,In Stock,Yes,1.7,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Meats,N/A,Walmart,Gift Wrap Available,Senior Discount
+147,Olive Oil,Grocery,8.43,Great Value,Same Day,Limited Stock,No,3.6,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Pantry,N/A,Walmart,No,WIC Eligible
+148,Vinegar,Grocery,9.05,Market Pantry,Next Day,Limited Stock,Yes,2.1,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Condiments & Sauces,N/A,Walmart,No,N/A
+149,Cheese,Grocery,1.07,Del Monte,Standard,Limited Stock,Yes,2.8,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Dairy,N/A,Walmart,No,N/A
+150,Spinach,Grocery,7.65,Organic Farms,Next Day,Out of Stock,Yes,1.1,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Produce,N/A,Walmart,No,Senior Discount
+151,Mayonnaise,Grocery,10.98,Market Pantry,Same Day,Out of Stock,No,1.6,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Condiments & Sauces,N/A,Walmart,Gift Wrap Available,N/A
+152,Apples,Grocery,17.39,Heinz,Standard,In Stock,No,4.6,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Produce,N/A,Walmart,No,N/A
+153,Turkey,Grocery,13.29,Organic Farms,Same Day,In Stock,No,4.8,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Meats,N/A,Walmart,No,Senior Discount
+154,Mixed Nuts,Grocery,9.19,Heinz,Two Day,Out of Stock,No,1.5,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Snacks,N/A,Walmart,No,SNAP Eligible
+155,Frozen Pizza,Grocery,4.8,Market Pantry,Next Day,Limited Stock,Yes,2.6,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Frozen,N/A,Walmart,No,WIC Eligible
+156,Frozen French Fries,Grocery,15.05,Market Pantry,Next Day,In Stock,No,1.2,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Frozen,N/A,Walmart,Gift Wrap Available,SNAP Eligible
+157,Frozen Berries,Grocery,7.38,Member's Mark,Standard,Limited Stock,Yes,3.6,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Frozen,N/A,Walmart,Gift Wrap Available,Senior Discount
+158,Tea Bags,Grocery,14.04,Private Selection,Standard,Limited Stock,Yes,1.6,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Beverages,N/A,Walmart,Gift Wrap Available,Senior Discount
+159,Bananas,Grocery,11.44,Organic Farms,Next Day,Limited Stock,No,2.2,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Produce,N/A,Walmart,No,WIC Eligible
+160,Steak,Grocery,1.77,Private Selection,Standard,In Stock,No,2.8,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Meats,N/A,Walmart,Gift Wrap Available,N/A
+161,Bottled Water,Grocery,12.6,Organic Farms,Next Day,In Stock,No,3.1,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Beverages,N/A,Walmart,Gift Wrap Available,Senior Discount
+162,Pepper,Grocery,4.72,Organic Farms,Next Day,Out of Stock,Yes,4.0,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Condiments & Sauces,N/A,Walmart,No,Senior Discount
+163,Salmon,Grocery,2.39,Kirkland,Same Day,In Stock,No,1.6,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Meats,N/A,Walmart,Gift Wrap Available,Senior Discount
+164,Soda,Grocery,17.26,Private Selection,Two Day,Out of Stock,Yes,4.9,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Beverages,N/A,Walmart,Gift Wrap Available,WIC Eligible
+165,Frozen Pizza,Grocery,17.89,Del Monte,Standard,Out of Stock,No,2.8,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Frozen,N/A,Walmart,Gift Wrap Available,WIC Eligible
+166,Croissants,Grocery,16.72,Heinz,Standard,Limited Stock,No,2.6,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Bakery,N/A,Walmart,Gift Wrap Available,SNAP Eligible
+167,Tortillas,Grocery,13.79,Great Value,Two Day,Out of Stock,No,4.8,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Bakery,N/A,Walmart,Gift Wrap Available,N/A
+168,Orange Juice,Grocery,3.33,Member's Mark,Two Day,In Stock,Yes,1.0,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Beverages,N/A,Walmart,Gift Wrap Available,SNAP Eligible
+169,Bacon,Grocery,8.18,Market Pantry,Next Day,Out of Stock,No,4.4,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Meats,N/A,Walmart,No,N/A
+170,Turkey,Grocery,15.09,Great Value,Two Day,Limited Stock,Yes,3.6,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Meats,N/A,Walmart,No,WIC Eligible
+171,Ground Beef,Grocery,4.26,Heinz,Two Day,In Stock,No,1.0,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Meats,N/A,Walmart,No,WIC Eligible
+172,Ham,Grocery,15.16,Market Pantry,Same Day,In Stock,Yes,1.5,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Meats,N/A,Walmart,Gift Wrap Available,WIC Eligible
+173,Canned Tuna,Grocery,10.11,Private Selection,Same Day,Limited Stock,Yes,2.2,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Pantry,N/A,Walmart,Gift Wrap Available,N/A
+174,Crackers,Grocery,11.3,Market Pantry,Next Day,In Stock,Yes,1.5,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Snacks,N/A,Walmart,Gift Wrap Available,N/A
+175,Grapes,Grocery,12.01,Great Value,Same Day,In Stock,Yes,2.0,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Produce,N/A,Walmart,Gift Wrap Available,SNAP Eligible
+176,Frozen French Fries,Grocery,11.41,Great Value,Standard,Limited Stock,Yes,2.4,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Frozen,N/A,Walmart,No,SNAP Eligible
+177,Bottled Water,Grocery,5.54,Private Selection,Standard,Limited Stock,No,1.5,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Beverages,N/A,Walmart,No,Senior Discount
+178,Popcorn,Grocery,14.36,Organic Farms,Next Day,In Stock,No,2.5,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Snacks,N/A,Walmart,Gift Wrap Available,SNAP Eligible
+179,Cheese,Grocery,9.75,Del Monte,Same Day,Limited Stock,No,1.6,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Dairy,N/A,Walmart,Gift Wrap Available,Senior Discount
+180,Crackers,Grocery,17.47,Organic Farms,Standard,Limited Stock,Yes,4.8,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Snacks,N/A,Walmart,No,N/A
+181,Granola Bars,Grocery,16.43,Organic Farms,Same Day,In Stock,No,4.5,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Snacks,N/A,Walmart,No,N/A
+182,Ketchup,Grocery,9.99,Organic Farms,Two Day,Out of Stock,No,4.0,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Condiments & Sauces,N/A,Walmart,No,N/A
+183,Canned Tuna,Grocery,17.43,Del Monte,Two Day,In Stock,No,1.3,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Pantry,N/A,Walmart,No,Senior Discount
+184,Strawberries,Grocery,12.92,Member's Mark,Next Day,Out of Stock,Yes,4.7,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Produce,N/A,Walmart,No,WIC Eligible
+185,Popcorn,Grocery,8.07,Great Value,Two Day,Out of Stock,Yes,3.2,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Snacks,N/A,Walmart,No,SNAP Eligible
+186,Eggs,Grocery,8.0,Member's Mark,Standard,Out of Stock,No,3.0,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Dairy,N/A,Walmart,Gift Wrap Available,Senior Discount
+187,Croissants,Grocery,1.78,Organic Farms,Same Day,Out of Stock,No,4.6,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Bakery,N/A,Walmart,Gift Wrap Available,Senior Discount
+188,Oats,Grocery,13.96,Organic Farms,Next Day,Out of Stock,Yes,4.1,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Pantry,N/A,Walmart,No,SNAP Eligible
+189,Crackers,Grocery,4.68,Del Monte,Two Day,Out of Stock,Yes,3.9,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Snacks,N/A,Walmart,No,WIC Eligible
+190,Sugar,Grocery,9.89,Heinz,Standard,In Stock,No,1.3,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Pantry,N/A,Walmart,Gift Wrap Available,N/A
+191,Olive Oil,Grocery,19.06,Kirkland,Standard,Out of Stock,No,2.0,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Pantry,N/A,Walmart,No,SNAP Eligible
+192,Cottage Cheese,Grocery,19.26,Del Monte,Standard,Out of Stock,No,4.2,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Dairy,N/A,Walmart,No,N/A
+193,Sparkling Water,Grocery,4.88,Organic Farms,Standard,In Stock,Yes,3.1,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Beverages,N/A,Walmart,No,WIC Eligible
+194,Ketchup,Grocery,1.93,Heinz,Standard,Limited Stock,No,1.8,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Condiments & Sauces,N/A,Walmart,Gift Wrap Available,Senior Discount
+195,Muffins,Grocery,2.52,Great Value,Two Day,In Stock,Yes,3.3,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Bakery,N/A,Walmart,No,Senior Discount
+196,Cottage Cheese,Grocery,3.93,Heinz,Same Day,Limited Stock,No,3.7,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Dairy,N/A,Walmart,No,Senior Discount
+197,Tea Bags,Grocery,17.83,Kirkland,Two Day,Limited Stock,Yes,1.4,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Beverages,N/A,Walmart,No,WIC Eligible
+198,Oats,Grocery,5.98,Private Selection,Next Day,Out of Stock,No,2.3,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Pantry,N/A,Walmart,No,Senior Discount
+199,Shrimp,Grocery,9.2,Market Pantry,Next Day,Out of Stock,Yes,3.5,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Meats,N/A,Walmart,No,Senior Discount
+200,Orange Juice,Grocery,17.06,Market Pantry,Same Day,In Stock,Yes,1.5,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Beverages,N/A,Walmart,Gift Wrap Available,SNAP Eligible
+201,Apples,Grocery,19.29,Organic Farms,Two Day,Out of Stock,No,2.7,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Produce,N/A,Walmart,Gift Wrap Available,N/A
+202,Bread,Grocery,16.58,Heinz,Two Day,Out of Stock,Yes,2.9,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Bakery,N/A,Walmart,No,N/A
+203,Bell Peppers,Grocery,18.75,Member's Mark,Next Day,In Stock,No,2.9,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Produce,N/A,Walmart,No,N/A
+204,Broccoli,Grocery,16.52,Private Selection,Two Day,Limited Stock,Yes,4.5,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Produce,N/A,Walmart,Gift Wrap Available,SNAP Eligible
+205,BBQ Sauce,Grocery,6.7,Market Pantry,Same Day,In Stock,Yes,3.8,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Condiments & Sauces,N/A,Walmart,No,SNAP Eligible
+206,Tortillas,Grocery,18.56,Great Value,Next Day,Limited Stock,No,3.0,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Bakery,N/A,Walmart,No,WIC Eligible
+207,Chips,Grocery,10.22,Heinz,Two Day,In Stock,Yes,2.8,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Snacks,N/A,Walmart,Gift Wrap Available,SNAP Eligible
+208,Pepper,Grocery,5.67,Private Selection,Same Day,Limited Stock,No,2.4,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Condiments & Sauces,N/A,Walmart,No,Senior Discount
+209,Chips,Grocery,17.98,Private Selection,Standard,Out of Stock,No,3.3,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Snacks,N/A,Walmart,Gift Wrap Available,Senior Discount
+210,Shrimp,Grocery,10.97,Organic Farms,Same Day,Out of Stock,No,2.0,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Meats,N/A,Walmart,Gift Wrap Available,WIC Eligible
+211,Canned Tuna,Grocery,7.57,Heinz,Next Day,Out of Stock,Yes,4.7,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Pantry,N/A,Walmart,Gift Wrap Available,N/A
+212,Tea Bags,Grocery,19.6,Del Monte,Same Day,Limited Stock,No,1.6,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Beverages,N/A,Walmart,Gift Wrap Available,Senior Discount
+213,Cucumbers,Grocery,13.69,Kirkland,Next Day,In Stock,Yes,3.7,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Produce,N/A,Walmart,Gift Wrap Available,N/A
+214,Baking Powder,Grocery,5.18,Private Selection,Two Day,Out of Stock,No,3.0,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Pantry,N/A,Walmart,Gift Wrap Available,Senior Discount
+215,Cream Cheese,Grocery,15.54,Market Pantry,Same Day,Limited Stock,Yes,4.9,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Dairy,N/A,Walmart,No,WIC Eligible
+216,Mustard,Grocery,2.92,Member's Mark,Two Day,Out of Stock,No,2.4,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Condiments & Sauces,N/A,Walmart,No,N/A
+217,Ketchup,Grocery,13.96,Kirkland,Standard,In Stock,Yes,4.7,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Condiments & Sauces,N/A,Walmart,Gift Wrap Available,N/A
+218,Eggs,Grocery,7.31,Member's Mark,Two Day,In Stock,Yes,4.0,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Dairy,N/A,Walmart,Gift Wrap Available,WIC Eligible
+219,Turkey,Grocery,6.31,Market Pantry,Two Day,Limited Stock,No,1.5,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Meats,N/A,Walmart,Gift Wrap Available,WIC Eligible
+220,Oats,Grocery,12.03,Market Pantry,Next Day,Limited Stock,No,3.7,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Pantry,N/A,Walmart,No,SNAP Eligible
+221,Cream Cheese,Grocery,4.14,Great Value,Same Day,In Stock,Yes,1.1,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Dairy,N/A,Walmart,Gift Wrap Available,Senior Discount
+222,Milk,Grocery,3.65,Member's Mark,Next Day,Out of Stock,Yes,1.7,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Dairy,N/A,Walmart,Gift Wrap Available,Senior Discount
+223,Bread,Grocery,7.31,Heinz,Same Day,Out of Stock,Yes,1.1,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Bakery,N/A,Walmart,No,Senior Discount
+224,Bacon,Grocery,1.22,Market Pantry,Same Day,Limited Stock,No,1.0,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Meats,N/A,Walmart,Gift Wrap Available,N/A
+225,Popcorn,Grocery,18.68,Del Monte,Two Day,Limited Stock,Yes,4.5,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Snacks,N/A,Walmart,Gift Wrap Available,Senior Discount
+226,Cream Cheese,Grocery,13.03,Great Value,Two Day,Limited Stock,No,3.2,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Dairy,N/A,Walmart,No,SNAP Eligible
+227,Apple Juice,Grocery,14.92,Organic Farms,Same Day,Limited Stock,No,2.0,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Beverages,N/A,Walmart,Gift Wrap Available,WIC Eligible
+228,Pasta,Grocery,7.99,Organic Farms,Next Day,In Stock,No,1.1,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Pantry,N/A,Walmart,Gift Wrap Available,SNAP Eligible
+229,Granola Bars,Grocery,5.59,Organic Farms,Same Day,Limited Stock,Yes,4.1,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Snacks,N/A,Walmart,No,N/A
+230,BBQ Sauce,Grocery,2.13,Private Selection,Two Day,In Stock,No,4.6,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Condiments & Sauces,N/A,Walmart,No,N/A
+231,Orange Juice,Grocery,15.43,Private Selection,Same Day,In Stock,Yes,1.1,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Beverages,N/A,Walmart,No,Senior Discount
+232,Mixed Nuts,Grocery,17.14,Member's Mark,Two Day,In Stock,Yes,4.6,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Snacks,N/A,Walmart,Gift Wrap Available,Senior Discount
+233,Soy Sauce,Grocery,11.58,Kirkland,Two Day,Limited Stock,Yes,4.1,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Condiments & Sauces,N/A,Walmart,No,SNAP Eligible
+234,Tea Bags,Grocery,12.57,Del Monte,Two Day,Limited Stock,Yes,2.7,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Beverages,N/A,Walmart,Gift Wrap Available,N/A
+235,Cheese,Grocery,5.27,Del Monte,Two Day,In Stock,Yes,4.8,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Dairy,N/A,Walmart,No,WIC Eligible
+236,Ice Cream,Grocery,19.34,Great Value,Standard,Limited Stock,No,4.9,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Frozen,N/A,Walmart,Gift Wrap Available,SNAP Eligible
+237,Coffee,Grocery,17.85,Organic Farms,Standard,Limited Stock,Yes,2.9,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Beverages,N/A,Walmart,Gift Wrap Available,SNAP Eligible
+238,Ham,Grocery,16.22,Kirkland,Same Day,Out of Stock,Yes,2.1,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Meats,N/A,Walmart,No,Senior Discount
+239,Rice,Grocery,1.16,Heinz,Standard,In Stock,No,4.4,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Pantry,N/A,Walmart,Gift Wrap Available,Senior Discount
+240,Cream Cheese,Grocery,19.98,Private Selection,Standard,Out of Stock,No,1.8,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Dairy,N/A,Walmart,No,N/A
+241,Frozen French Fries,Grocery,3.6,Del Monte,Two Day,Out of Stock,No,4.7,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Frozen,N/A,Walmart,No,WIC Eligible
+242,Cottage Cheese,Grocery,18.41,Del Monte,Next Day,Limited Stock,Yes,1.8,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Dairy,N/A,Walmart,No,SNAP Eligible
+243,Soda,Grocery,3.41,Private Selection,Two Day,Out of Stock,Yes,3.7,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Beverages,N/A,Walmart,Gift Wrap Available,N/A
+244,Bottled Water,Grocery,3.29,Market Pantry,Next Day,In Stock,Yes,1.4,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Beverages,N/A,Walmart,Gift Wrap Available,Senior Discount
+245,Orange Juice,Grocery,8.52,Private Selection,Next Day,In Stock,Yes,2.1,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Beverages,N/A,Walmart,No,Senior Discount
+246,Bread,Grocery,16.76,Market Pantry,Standard,In Stock,No,2.5,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Bakery,N/A,Walmart,No,WIC Eligible
+247,Cookies,Grocery,4.82,Great Value,Standard,Out of Stock,No,2.9,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Snacks,N/A,Walmart,No,Senior Discount
+248,Ground Beef,Grocery,5.79,Kirkland,Standard,In Stock,No,4.8,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Meats,N/A,Walmart,No,N/A
+249,Apples,Grocery,18.19,Member's Mark,Same Day,Limited Stock,No,2.3,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Produce,N/A,Walmart,No,Senior Discount
+250,Bottled Water,Grocery,15.5,Heinz,Two Day,Limited Stock,Yes,3.2,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Beverages,N/A,Walmart,No,Senior Discount
+251,Salmon,Grocery,5.61,Private Selection,Standard,In Stock,Yes,3.2,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Meats,N/A,Walmart,Gift Wrap Available,Senior Discount
+252,BBQ Sauce,Grocery,8.03,Organic Farms,Next Day,In Stock,No,4.1,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Condiments & Sauces,N/A,Walmart,No,Senior Discount
+253,Frozen Pizza,Grocery,18.82,Market Pantry,Two Day,Limited Stock,Yes,4.8,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Frozen,N/A,Walmart,No,Senior Discount
+254,Pasta,Grocery,12.44,Member's Mark,Two Day,Limited Stock,No,1.0,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Pantry,N/A,Walmart,Gift Wrap Available,SNAP Eligible
+255,Tea Bags,Grocery,1.06,Heinz,Standard,Limited Stock,No,3.7,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Beverages,N/A,Walmart,Gift Wrap Available,WIC Eligible
+256,Granola Bars,Grocery,13.41,Heinz,Same Day,Limited Stock,Yes,4.1,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Snacks,N/A,Walmart,Gift Wrap Available,Senior Discount
+257,Frozen Vegetables,Grocery,2.4,Kirkland,Next Day,Limited Stock,Yes,4.7,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Frozen,N/A,Walmart,Gift Wrap Available,N/A
+258,Butter,Grocery,16.45,Private Selection,Same Day,Limited Stock,Yes,2.1,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Dairy,N/A,Walmart,Gift Wrap Available,N/A
+259,Ice Cream,Grocery,12.03,Member's Mark,Next Day,In Stock,No,1.0,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Frozen,N/A,Walmart,No,WIC Eligible
+260,Canned Tuna,Grocery,8.35,Private Selection,Same Day,In Stock,No,3.7,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Pantry,N/A,Walmart,Gift Wrap Available,SNAP Eligible
+261,Sparkling Water,Grocery,11.65,Kirkland,Next Day,Out of Stock,No,3.2,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Beverages,N/A,Walmart,Gift Wrap Available,Senior Discount
+262,Pasta,Grocery,13.13,Great Value,Standard,Limited Stock,Yes,2.7,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Pantry,N/A,Walmart,No,Senior Discount
+263,Granola Bars,Grocery,6.58,Member's Mark,Same Day,Out of Stock,No,2.4,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Snacks,N/A,Walmart,Gift Wrap Available,Senior Discount
+264,Jelly,Grocery,17.91,Kirkland,Standard,Out of Stock,No,4.0,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Pantry,N/A,Walmart,Gift Wrap Available,SNAP Eligible
+265,Bell Peppers,Grocery,17.17,Kirkland,Standard,In Stock,Yes,1.1,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Produce,N/A,Walmart,Gift Wrap Available,N/A
+266,Steak,Grocery,2.22,Market Pantry,Same Day,In Stock,No,2.4,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Meats,N/A,Walmart,Gift Wrap Available,SNAP Eligible
+267,Pepper,Grocery,16.47,Del Monte,Two Day,Limited Stock,Yes,4.1,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Condiments & Sauces,N/A,Walmart,Gift Wrap Available,N/A
+268,Rice,Grocery,8.31,Del Monte,Same Day,In Stock,Yes,3.5,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Pantry,N/A,Walmart,Gift Wrap Available,WIC Eligible
+269,Milk,Grocery,14.95,Private Selection,Same Day,In Stock,No,4.3,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Dairy,N/A,Walmart,No,WIC Eligible
+270,Canned Tuna,Grocery,13.33,Member's Mark,Next Day,Out of Stock,Yes,4.7,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Pantry,N/A,Walmart,No,Senior Discount
+271,Granola Bars,Grocery,15.66,Organic Farms,Next Day,In Stock,Yes,1.2,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Snacks,N/A,Walmart,Gift Wrap Available,N/A
+272,Popcorn,Grocery,14.6,Organic Farms,Next Day,Limited Stock,Yes,1.7,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Snacks,N/A,Walmart,No,N/A
+273,Orange Juice,Grocery,16.69,Private Selection,Next Day,Limited Stock,No,3.2,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Beverages,N/A,Walmart,No,Senior Discount
+274,Frozen French Fries,Grocery,2.16,Organic Farms,Same Day,Out of Stock,Yes,1.2,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Frozen,N/A,Walmart,Gift Wrap Available,Senior Discount
+275,Steak,Grocery,18.83,Del Monte,Two Day,In Stock,Yes,2.9,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Meats,N/A,Walmart,No,WIC Eligible
+276,Mixed Nuts,Grocery,15.41,Heinz,Two Day,In Stock,No,4.5,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Snacks,N/A,Walmart,Gift Wrap Available,N/A
+277,Cucumbers,Grocery,2.97,Private Selection,Next Day,In Stock,No,1.6,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Produce,N/A,Walmart,No,Senior Discount
+278,Coffee,Grocery,16.27,Del Monte,Next Day,Limited Stock,No,3.0,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Beverages,N/A,Walmart,No,Senior Discount
+279,Cottage Cheese,Grocery,19.89,Heinz,Two Day,Out of Stock,No,2.9,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Dairy,N/A,Walmart,No,N/A
+280,Popcorn,Grocery,9.27,Kirkland,Two Day,Out of Stock,Yes,4.7,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Snacks,N/A,Walmart,Gift Wrap Available,SNAP Eligible
+281,Salt,Grocery,10.57,Organic Farms,Two Day,Limited Stock,No,1.8,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Condiments & Sauces,N/A,Walmart,Gift Wrap Available,Senior Discount
+282,Soy Sauce,Grocery,11.01,Del Monte,Two Day,Out of Stock,Yes,1.1,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Condiments & Sauces,N/A,Walmart,No,WIC Eligible
+283,Sugar,Grocery,19.92,Market Pantry,Same Day,Limited Stock,No,2.7,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Pantry,N/A,Walmart,No,N/A
+284,Chicken Breast,Grocery,17.36,Private Selection,Standard,Limited Stock,Yes,2.9,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Meats,N/A,Walmart,No,Senior Discount
+285,Cereal,Grocery,4.26,Organic Farms,Standard,In Stock,No,1.6,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Pantry,N/A,Walmart,Gift Wrap Available,Senior Discount
+286,Cookies,Grocery,10.4,Organic Farms,Same Day,In Stock,Yes,2.4,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Snacks,N/A,Walmart,No,N/A
+287,Vinegar,Grocery,4.65,Kirkland,Same Day,Out of Stock,No,3.2,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Condiments & Sauces,N/A,Walmart,Gift Wrap Available,WIC Eligible
+288,Croissants,Grocery,5.92,Heinz,Next Day,Limited Stock,Yes,3.0,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Bakery,N/A,Walmart,Gift Wrap Available,WIC Eligible
+289,Ice Cream,Grocery,8.15,Heinz,Standard,In Stock,No,3.5,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Frozen,N/A,Walmart,No,Senior Discount
+290,Bread,Grocery,2.51,Great Value,Two Day,In Stock,Yes,3.5,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Bakery,N/A,Walmart,No,N/A
+291,Croissants,Grocery,16.86,Heinz,Same Day,Out of Stock,Yes,4.3,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Bakery,N/A,Walmart,No,Senior Discount
+292,Granola Bars,Grocery,15.89,Kirkland,Standard,Out of Stock,Yes,1.2,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Snacks,N/A,Walmart,Gift Wrap Available,Senior Discount
+293,Granola Bars,Grocery,17.37,Great Value,Next Day,Out of Stock,No,4.9,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Snacks,N/A,Walmart,No,Senior Discount
+294,Popcorn,Grocery,3.27,Del Monte,Standard,Out of Stock,No,3.8,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Snacks,N/A,Walmart,Gift Wrap Available,N/A
+295,Cookies,Grocery,3.68,Private Selection,Standard,Limited Stock,Yes,4.2,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Snacks,N/A,Walmart,Gift Wrap Available,WIC Eligible
+296,Tortillas,Grocery,7.67,Great Value,Next Day,Out of Stock,Yes,1.5,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Bakery,N/A,Walmart,Gift Wrap Available,SNAP Eligible
+297,Potatoes,Grocery,3.2,Del Monte,Same Day,Limited Stock,No,4.0,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Produce,N/A,Walmart,No,N/A
+298,Grapes,Grocery,5.01,Member's Mark,Two Day,Limited Stock,No,4.7,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Produce,N/A,Walmart,Gift Wrap Available,Senior Discount
+299,Crackers,Grocery,12.85,Market Pantry,Next Day,Limited Stock,Yes,3.4,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Snacks,N/A,Walmart,No,N/A
+300,Beans,Grocery,17.83,Private Selection,Next Day,In Stock,Yes,2.3,N/A,Fresh,N/A,N/A,N/A,None,N/A,N/A,N/A,Pantry,N/A,Walmart,No,Senior Discount

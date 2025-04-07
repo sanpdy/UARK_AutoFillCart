@@ -1,0 +1,28 @@
+id,recipe_id,ingredient,quantity,measure
+1,1,Pasta,8,oz
+2,1,Olive Oil,2,tbsp
+3,1,Salt,1,tsp
+4,1,Pepper,0.5,tsp
+5,1,Tomatoes,2,whole (optional garnish)
+6,1,Cheese,0.25,cup (optional)
+7,2,Chicken Breast,1,lb
+8,2,Bell Peppers,2,whole
+9,2,Onions,1,whole
+10,2,Soy Sauce,2,tbsp
+11,2,Rice,1,cup (uncooked)
+12,2,Olive Oil,1,tbsp
+13,3,Bread,2,slices
+14,3,Butter,1,tbsp
+15,3,Cheese,2,slices
+16,4,Lettuce,1,head
+17,4,Tomatoes,2,whole
+18,4,Cucumbers,1,whole
+19,4,Onions,0.5,whole
+20,4,Salt,0.25,tsp
+21,4,Pepper,0.25,tsp
+22,5,Flour,1,cup
+23,5,Sugar,2,tbsp
+24,5,Baking Powder,2,tsp
+25,5,Milk,1,cup
+26,5,Eggs,1,whole
+27,5,Butter,1,tbsp (for greasing)

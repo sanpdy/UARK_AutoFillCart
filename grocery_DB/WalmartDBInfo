@@ -93,6 +93,32 @@ Core Drivers: Price, availability, fulfillment speed, brand, ratings, category, 
 Extra Filters: Product-specific variables (like flavor, container, or size) become important depending on the product type (e.g., groceries vs. electronics).
 Niche Needs: Benefit programs, gifting options, or advanced details like “meat type” or “packaged meal type” can be essential for specific user segments.
 
+Grocery Department Categories from walmart online shopping 
+Shop all Grocery
+EBT/SNAP eligible food
+Exclusively online
+Everyday meals
+Recipes
+Fresh Produce
+Meat & Seafood
+Deli
+Dairy & Eggs
+Bread & Bakery
+Frozen
+Pantry
+Breakfast & Cereal
+Bake Center
+Cookies
+Snacks
+Candy
+Beverages
+Alcohol
+Organic Foods
+Gluten Free Foods
+Food Gifts & Flowers Shop
+Savings
+
+Initial DB creation code
 import sqlite3
 
 # 1. Connect to or create the SQLite database

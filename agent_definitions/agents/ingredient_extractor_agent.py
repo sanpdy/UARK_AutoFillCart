@@ -2,6 +2,7 @@ import json
 import tkinter as tk
 from tkinter import filedialog
 from agent_definitions.agent_superclass import Agent
+from recipe_processing import select_file_and_extract_text
 
 output_ingredients_tool_def = {
     "type": "function",
@@ -86,7 +87,7 @@ class IngredientExtractorAgent(Agent):
 
 if __name__ == "__main__":
     agent = IngredientExtractorAgent()
-    recipe = "1 cup of flour, 2 eggs, 1/2 cup of sugar"
+    recipe = select_file_and_extract_text(verbose=True)
     ingredients = agent.extract_ingredients_from_recipe(recipe)
     print(json.dumps(ingredients, indent=2))
     # Expected Output: [{'ingredient': 'flour', 'quantity': '1 cup'}, {'ingredient': 'eggs', 'quantity': '2'}, ...]

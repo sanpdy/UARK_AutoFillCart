@@ -1,8 +1,13 @@
-import json
-from recipe_processing import import_file_and_extract_ingredients
+import asyncio
 
-print("Running UARK_AutoFillCart as a module!")
+from recipe_processing import select_file_and_extract_text
+from agent_definitions.agents.unified_cart_autofill_agent import UnifiedCartAutofillAgent
 
 if __name__ == "__main__":
-    ingredients = import_file_and_extract_ingredients()
-    print(json.dumps(ingredients, indent=2))
+    agent = UnifiedCartAutofillAgent()
+    example_recipe = select_file_and_extract_text(verbose=True)
+    example_cart_url = asyncio.run(agent.get_cart_from_recipe(example_recipe, verbose=False))
+    print(f"Generated Walmart Cart URL: {example_cart_url}")
+    # Expected Output: Generated Walmart Cart URL: https://www.walmart.com/cart?items=...
+
+

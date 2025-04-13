@@ -16,12 +16,12 @@ def generate_signature(private_key, string_to_sign):
     return base64.b64encode(signature).decode('utf-8')
 
 # Load your RSA private key (ensure the path and any password are correct)
-with open("../walmart_private_key.pem", "rb") as key_file:
+with open("../../walmart_private_key.pem", "rb") as key_file:
     private_key = serialization.load_pem_private_key(key_file.read(), password=None)
 
 # Set your header values (replace with your actual consumer ID and key version)
-consumer_id = "2b327958-c834-40e2-bd3f-731807c07e80"     # This is provided once you upload your public key
-key_version = "3"                    # Use the key version as assigned by Walmart
+consumer_id = "692e16e8-25dc-4df4-a040-e20a77ef9d73"     # This is provided once you upload your public key
+key_version = "1"                    # Use the key version as assigned by Walmart
 timestamp = str(int(time.time() * 1000))  # Current time in milliseconds
 
 # Prepare the headers to sign (order matters: sort keys alphabetically)

@@ -28,7 +28,7 @@ def generate_signature(private_key, string_to_sign):
     return base64.b64encode(signature).decode('utf-8')
 
 # Load the RSA private key from PEM file
-with open("../walmart_private_key.pem", "rb") as key_file:
+with open("../../walmart_private_key.pem", "rb") as key_file:
     private_key = serialization.load_pem_private_key(
         key_file.read(),
         password=None  # Add a password if your key is encrypted

@@ -1,46 +1,40 @@
-import json
 import tkinter as tk
 from tkinter import filedialog
 from pdfminer.high_level import extract_text
 
-from agent_definitions.agents.ingredient_extractor_agent import IngredientExtractorAgent
 from utils.pdf_to_txt_util import replace_fractions
 
 
-def import_file_and_extract_ingredients():
+def select_file_and_extract_text(verbose=False):
+    """
+    Opens a file explorer to select a file and processes it into a string.
+    Supports .txt, .md, and .pdf files.
+    """
     # Initialize Tkinter and hide the main window.
     root = tk.Tk()
     root.withdraw()
 
-    # Open a file explorer dialog to select a file (txt, md, or pdf).
+    # Open a file explorer dialog to select a file.
     file_path = filedialog.askopenfilename(
-        title="Select a Recipe File",
-        filetypes=[("Recipe Files", ("*.txt", "*.md", "*.pdf"))]
+        title="Select a File",
+        filetypes=[("Supported Files", ("*.txt", "*.md", "*.pdf"))]
     )
 
-    if file_path:
-        recipe = ""
-        # Check file extension to decide how to read the file.
-        if file_path.lower().endswith(".pdf"):
-            if extract_text is None:
-                print(
-                    "pdfminer.six is required to process PDF files. Please install it using 'pip install pdfminer.six'")
-                exit(1)
-            # Extract text from the PDF and process fractions.
-            recipe = extract_text(file_path)
-            recipe = replace_fractions(recipe)
-        else:
-            with open(file_path, "r", encoding="utf-8") as file:
-                recipe = file.read()
+    if not file_path:
+        if verbose:
+            print("No file selected.")
+        return None
 
-        # Use the recipe text as input for the ingredient extraction agent.
-        agent = IngredientExtractorAgent()
-        ingredients = agent.extract_ingredients_from_recipe(recipe)
-        return ingredients
+    file_content = ""
+    if file_path.lower().endswith(".pdf"):
+        if extract_text is None:
+            raise ImportError("pdfminer.six is required to process PDF files. Install it using 'pip install pdfminer.six'.")
+        # Extract text from the PDF and process fractions.
+        file_content = extract_text(file_path)
+        file_content = replace_fractions(file_content)
     else:
-        print("No file selected.")
+        # Read text or markdown files.
+        with open(file_path, "r", encoding="utf-8") as file:
+            file_content = file.read()
 
-
-if __name__ == "__main__":
-    ingredients = import_file_and_extract_ingredients()
-    print(json.dumps(ingredients, indent=2))
+    return file_content

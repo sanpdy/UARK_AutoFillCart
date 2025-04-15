@@ -46,7 +46,7 @@ Untested, but probably the same as Windows. Ask ChatGPT.
 
 Follow the steps linked above to copy and paste the public key to the key upload page by executing command. The text should be bounded by "-----BEGIN PUBLIC KEY-----" and "-----END PUBLIC KEY-----", but do not include these headers in the Walmart portal.
 
-After you have uploaded the public key to the walmart.io portal, a **consumer id** will be generated for your application. Make a note of this for making requests to the API next.
+After you have uploaded the public key to the walmart.io portal, a **consumer id** will be generated for your application. Make a note of this for making requests to the API next. Note that it may take a short period of time for Walmart's end to register you changes on the backend.
 
 ## Step 4: Run a Query
 

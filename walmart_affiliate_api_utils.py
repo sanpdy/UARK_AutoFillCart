@@ -231,6 +231,12 @@ if __name__ == "__main__":
         key_file_path=r"C:\Users\Stephen Pierson\.ssh\rsa_key_20250410_v2"
     )
 
+    # walmart_api = WalmartAPI(
+    #     consumer_id="692e16e8-25dc-4df4-a040-e20a77ef9d73",
+    #     key_version="3",
+    #     key_file_path=r"C:\Users\Stephen Pierson\.ssh\setup_test"
+    # )
+
     # Example: Get Walmart website taxonomy
     taxonomy_str = walmart_api.get_walmart_taxonomy()
     try:

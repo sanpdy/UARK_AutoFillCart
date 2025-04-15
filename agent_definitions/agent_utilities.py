@@ -19,7 +19,7 @@ import anthropic
 from colorama import Fore, Style
 from pydantic import BaseModel
 
-from load_env import openai_api_key  #, anthropic_api_key
+from load_env import openai_api_key, anthropic_api_key
 
 # Load environment variables from the .env file
 load_dotenv()
@@ -524,8 +524,8 @@ def get_client_wrapper_for_llm_api_provider(model_api_provider):
     # Get the key for the correct tools list in bedrock_tools
     if model_api_provider == 'openai':
         return OpenAIClientWrapper(api_key=openai_api_key)
-    # elif model_api_provider == 'anthropic':
-    #     return AnthropicClientWrapper(api_key=anthropic_api_key)
+    elif model_api_provider == 'anthropic':
+        return AnthropicClientWrapper(api_key=anthropic_api_key)
     else:
         raise ValueError("ActionAgent's self.model_api_provider does not have a valid value")
 

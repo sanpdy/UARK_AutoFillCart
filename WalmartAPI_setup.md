@@ -1,3 +1,58 @@
+Authored by: Stephen Pierson
+
+Updated: 04/14/2025
+
+# Walmart Affiliate API Quickstart Guide with Python
+
+The following steps will get you up and running quickly with the Walmart Affiliate Marketing API and provide setup code to send requests from Python. At the time of writing, the quickstart guide on walmart.io is incomplete, encourages you to write unsecure code, and expects you to make your first request with Java (gross), so this guide addresses those issues.
+
+## Step 1: Create Your Account
+
+Before you can begin, you will need to go to https://www.walmart.io/docs/affiliates/v1/introduction on the web and log in with your Walmart.com account. If you don't have one, you can create one there.
+
+## Step 2: Create Your Application
+
+Navigate to the Dashboard by clicking on your profile icon in the top right. On the left-hand panel, there should be an 'Applications' tab. Click the button to create a new application. You will be asked to enter details about your application so you can link it to your account for future reference.
+
+## Step 3: Generate and Upload Your RSA Key Pair
+
+### Generate Your Key Files
+
+In order for Walmart to authenticate your API requests, you need to upload an RSA public key to for your application in the walmart.io portal.
+
+If you do not have an RSA key pair (or have lost it), you can make one. After navigating to the directory you want to create your RSA key files in with the terminal, you can follow these [steps](https://www.walmart.io/key-tutorial) (compatible with Unix/Mac & Windows) to create a compatible RSA public/private key set. Give your keys a name.
+
+**NOTE**: It is recommended to create your first RSA key set **without** a password as it complicates the process of making Python requests.
+
+If you are unsure of which created file is the public key and which is the private key, the public key should look something like this if you open it in a text editor:
+
+```
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCm+LSCbBniaqUd6aYE/zPT0ttgQjkyjykLU3oXgUrDhYGlpRo8cb/4UkAMY1+Nn+UQiM2EV1MYAJuerjxqMOmCDN2tAAafqymgFdjz2vr0yQqL01AsNEXZN7yW0ExvDOvvs6NJk2LW6uhhmt031j7YdAMdIwGLqQ98Olk8xnwaUDGUASUAfBVnHYJoY1sPAs0eNszHJj4CkYK0f4wYOOc5w9O04haFuSfBfReOwTNd7DAzYjKrfttg16pozml3kK5mhcdNm1adpuOVJ9QVuA6BkDCcNpSgkGY+Iwxf0sdZNXGmtnXQjWqzURabHh/NkZIcqCUsebvD1JOdnkWjlojLORs6fxuq/zw7vKIVyuyDbfoROldU8959c1o6jj2XpMofXrEOOxj3msp5jF7emMQDSFlpUQQq6tZgDY/pEdktHjuNs/QjtTdSrRFF5MkTV3Jr90GsrKqFrHjaw08mD2FWPI8olxLJm3hqry4mh93N6+j3Yzqo4V5ZM+KinUXiM10= user@DESKTOP-xxxxxxx
+```
+
+**IMPORTANT**: It is critical that you keep your RSA private key private. If it gets shared with someone else, they can use it to abuse your access to the API.
+
+The steps on walmart.io (at the time of writing) DO NOT tell you how to convert your private RSA key to the "pem" file format the code provided further down in this guide requires to send API requests. If you followed the linked steps, your file is likely in OpenSSL format. Your file is only in "pem" format if it has "-----BEGIN PRIVATE KEY-----" and "-----END PRIVATE KEY-----" headers. For that, you'll need to execute a separate command. Use the following command to convert your key to PEM format:
+
+For Windows:
+```terminal
+ssh-keygen -p -f path\to\your\private_key -m PKCS8
+```
+
+For Unix/Mac:
+Untested, but probably the same as Windows. Ask ChatGPT.
+
+### Upload Your Key to the Walmart Portal
+
+Follow the steps linked above to copy and paste the public key to the key upload page by executing command. The text should be bounded by "-----BEGIN PUBLIC KEY-----" and "-----END PUBLIC KEY-----", but do not include these headers in the Walmart portal.
+
+After you have uploaded the public key to the walmart.io portal, a **consumer id** will be generated for your application. Make a note of this for making requests to the API next.
+
+## Step 4: Run a Query
+
+Below is some starter code to get you up and running with making some Walmart API requests. It handles creating and injecting the API signature and other request headers into your queries. You may need to install the python cryptography library -> use: `pip install cryptography`. It is not comprehensive, but hopefully you can figure out how to build on the `WalmartAPI` wrapper class using the [API documentation](https://walmart.io/docs/affiliates/v1/catalog-product) provided by Walmart. Happy coding!
+
+```python
 import json
 import warnings
 
@@ -226,20 +281,18 @@ class WalmartAPI:
 if __name__ == "__main__":
     # Create an instance of WalmartAPI with your credentials.
     walmart_api = WalmartAPI(
-        # consumer_id="fe944cf5-2cd6-4664-8d8a-1a6e0882d722",
-        consumer_id="692e16e8-25dc-4df4-a040-e20a77ef9d73",
-        key_version="3",
-        # key_file_path=r"C:\Users\Stephen Pierson\.ssh\rsa_key_20250410_v2"
-        key_file_path=r"C:\Users\Stephen Pierson\.ssh\rsa_creation_process_test2"
+        consumer_id="your_consumer_id_from_walmart",
+        key_version="your_key_version_from_walmart",
+        key_file_path=r"path\to\your\rsa_private_key"
     )
 
-    # Example: Get Walmart website taxonomy
-    taxonomy_str = walmart_api.get_walmart_taxonomy()
-    try:
-        taxonomy_json = json.loads(taxonomy_str)
-        print("Taxonomy:", json.dumps(taxonomy_json, indent=2))
-    except json.JSONDecodeError:
-        print("Taxonomy response (raw):", taxonomy_str)
+    # # Example: Get Walmart website taxonomy
+    # taxonomy_str = walmart_api.get_walmart_taxonomy()
+    # try:
+    #     taxonomy_json = json.loads(taxonomy_str)
+    #     print("Taxonomy:", json.dumps(taxonomy_json, indent=2))
+    # except json.JSONDecodeError:
+    #     print("Taxonomy response (raw):", taxonomy_str)
 
     # # Example: Get Walmart product search results and filter properties.
     # search_term = "corned beef"
@@ -276,3 +329,5 @@ if __name__ == "__main__":
     ]
     cart_url = WalmartAPI.generate_walmart_cart_url(example_items)
     print("Cart URL:", cart_url)
+
+```

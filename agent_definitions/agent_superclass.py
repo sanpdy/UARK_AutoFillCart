@@ -6,8 +6,8 @@ class Agent:
     def __init__(self, llm='gpt-4o-mini', llm_api_provider='openai', embedding_model='text-embedding-3-small',
                  embedding_api_provider='openai', system_prompt=None, skill_library_db=None):
         # Declare attributes for generating LLM responses
-        self.openai_api_wrapper = get_client_wrapper_for_llm_api_provider('openai')
-        self.anthropic_api_wrapper = get_client_wrapper_for_llm_api_provider('anthropic')
+        # self.openai_api_wrapper = get_client_wrapper_for_llm_api_provider('openai')
+        # self.anthropic_api_wrapper = get_client_wrapper_for_llm_api_provider('anthropic')
         self.llm_api_provider = llm_api_provider
         self.llm_api_wrapper = get_client_wrapper_for_llm_api_provider(llm_api_provider)
         self.model = llm

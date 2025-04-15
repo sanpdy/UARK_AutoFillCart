@@ -226,11 +226,9 @@ class WalmartAPI:
 if __name__ == "__main__":
     # Create an instance of WalmartAPI with your credentials.
     walmart_api = WalmartAPI(
-        # consumer_id="fe944cf5-2cd6-4664-8d8a-1a6e0882d722",
-        consumer_id="692e16e8-25dc-4df4-a040-e20a77ef9d73",
-        key_version="3",
-        # key_file_path=r"C:\Users\Stephen Pierson\.ssh\rsa_key_20250410_v2"
-        key_file_path=r"C:\Users\Stephen Pierson\.ssh\rsa_creation_process_test2"
+        consumer_id="fe944cf5-2cd6-4664-8d8a-1a6e0882d722",
+        key_version="1",
+        key_file_path=r"C:\Users\Stephen Pierson\.ssh\rsa_key_20250410_v2"
     )
 
     # Example: Get Walmart website taxonomy

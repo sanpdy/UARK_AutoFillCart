@@ -304,18 +304,18 @@ class UnifiedCartAutofillAgent(Agent):
         tool_call_name = self.llm_api_wrapper.get_name_from_tool_call(tool_call)
         tool_call_args = self.llm_api_wrapper.get_arguments_from_tool_call(tool_call)
         if tool_call_name == self.llm_api_wrapper.get_tool_name_from_definition(select_best_item_tool_def):
-            itemId = tool_call_args.get('itemId')
-            product_quantity = tool_call_args.get('quantity')
+            chosen_itemId = tool_call_args.get('itemId')
+            chosen_quantity = tool_call_args.get('quantity')
             rationale = tool_call_args.get('rationale')
             # Check for invalid selections.
             retry_flag = False
             retry_reason = ""
-            if itemId not in itemIds:
-                tool_call_response_content = f"Product selection failed: itemId \"{itemId}\" not a valid selection."
+            if chosen_itemId not in itemIds:
+                tool_call_response_content = f"Product selection failed: itemId \"{chosen_itemId}\" not a valid selection."
                 retry_reason = "invalid_itemId"
                 retry_flag = True
-            elif product_quantity < 1:
-                tool_call_response_content = f"Product selection failed: quantity \"{product_quantity}\" is invalid (cannot be < 1)."
+            elif chosen_quantity < 1:
+                tool_call_response_content = f"Product selection failed: quantity \"{chosen_quantity}\" is invalid (cannot be < 1)."
                 retry_reason = "invalid_quantity"
                 retry_flag = True
             else:
@@ -341,19 +341,25 @@ class UnifiedCartAutofillAgent(Agent):
                 selected_product = asyncio.run(self.retry_product_selection(context, retry_count=retry_count+1))
                 return selected_product
             else:
-                # Return the selected product.
-                index = next((i for i, product in enumerate(available_products) if product.get('itemId') == itemId), None)
+                # Return the product choice and its info.
+                chosen_index = next((i for i, product in enumerate(available_products) if product.get('itemId') == chosen_itemId), None)
                 try:
-                    item_details = available_products[index] if index is not None else None
+                    item_details = available_products[chosen_index]
+                    substitutes = []
+                    for i, item in enumerate(available_products):
+                        if i != chosen_index:
+                            substitutes.append({'item_details': item})
                 except IndexError:
                     item_details = None
+                    substitutes = None
 
                 return {
-                    'itemId': itemId,
-                    'quantity': product_quantity,
+                    'itemId': chosen_itemId,
+                    'quantity': chosen_quantity,
                     'seller': 'walmart',
                     'rationale': rationale,
                     'item_details': item_details,
+                    'substitutes': substitutes,
                 }
         else:
             raise Exception(f"Unexpected tool call name: {tool_call_name}")

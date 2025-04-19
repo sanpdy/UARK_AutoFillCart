@@ -124,11 +124,10 @@ class UnifiedCartAutofillAgent(Agent):
 
     async def get_cart_from_recipe(self, recipe: str, batch_size: str = "1", verbose=False):
         shopping_list = self.extract_shopping_list_from_recipe(recipe, batch_size)
-        # Output:
-        #  [{"ingredient": "flour", "quantity": "1 cup"}, ...]
+        # Example shopping list:
+        #  [{"ingredient": "flour", "prep_work_reasoning": "None required", "product": "all-purpose flour", "quantity": "1 cup"}, ...]
         print(f"Shopping List ({len(shopping_list)} items):\n"
               f"{json.dumps(shopping_list, indent=2)}\n")
-        # Note: the new bypass flag is passed here. When set to True, retry_product_selection is bypassed.
         return await self.get_cart_from_shopping_list(
             shopping_list,
             initial_agent_context=self.ingredient_extraction_context,
@@ -136,7 +135,7 @@ class UnifiedCartAutofillAgent(Agent):
             bypass_retry=True
         )
 
-    async def get_cart_from_shopping_list(self, shopping_list: list, initial_agent_context=None, verbose=False, bypass_retry=True):
+    async def get_cart_from_shopping_list(self, shopping_list: list, initial_agent_context=None, bypass_retry=True, verbose=False):
         """
         Generate an online cart URL from a shopping list.
 
@@ -146,13 +145,22 @@ class UnifiedCartAutofillAgent(Agent):
         Parameters:
             shopping_list (list): A list of dictionaries, where each dictionary contains
                 details about a product to search for (e.g., 'product' and 'quantity').
+
+                Expected schema:
+                    [
+                        {
+                            "product": "flour",
+                            "quantity": "1 cup"
+                        },
+                        ...
+                    ]
+
             initial_agent_context (list, optional): The initial context for the agent,
                 used to maintain conversation state. Defaults to an empty list.
             verbose (bool, optional): Whether to print detailed logs for debugging.
                 Defaults to False.
             bypass_retry (bool, optional): If True, do not retry on failures and instead
-                warn the user and skip the item.
-                Defaults to False.
+                warn the user and skip the item. Defaults to True.
 
         Returns:
             str: A cart URL containing the selected products.
@@ -171,20 +179,20 @@ class UnifiedCartAutofillAgent(Agent):
         # Gather results from processing each shopping list item.
         items = await asyncio.gather(*tasks)
 
+        print("Proposed Cart:")
         for item in items:
-            print(json.dumps(item, sort_keys=True))
+            print(json.dumps(item, sort_keys=False))
         print()
 
-        # Identify and print out items that have quantity == 0,
-        # and filter them from the list that will be passed to generate_walmart_cart_url.
+        # Identify and print out items that have quantity == 0, and filter them out from the proposed cart
         skipped_item_names = []
-        filtered_items = []
+        cart = []
         for idx, result in enumerate(items):
             if result.get("quantity", 0) == 0:
                 # Use the ingredient name from the original shopping list for reporting.
-                skipped_item_names.append(shopping_list[idx].get("ingredient", "Unknown"))
+                skipped_item_names.append(shopping_list[idx].get("product", "Unknown"))
             else:
-                filtered_items.append(result)
+                cart.append(result)
 
         if skipped_item_names:
             print("The following items were skipped due to being unable to find a matching product:")
@@ -192,11 +200,11 @@ class UnifiedCartAutofillAgent(Agent):
                 print(f"- {name}")
             print()
 
-        # Generate the cart URL with the filtered items.
-        cart_url = self.walmart_api_wrapper.generate_walmart_cart_url(filtered_items)
-        return cart_url
+        return cart
 
     def extract_shopping_list_from_recipe(self, recipe: str, batch_size: str = "1"):
+        # Example Output:
+        #  [{"ingredient": "flour", "prep_work_reasoning": "None required", "product": "all-purpose flour", "quantity": "1 cup"}, ...]
         recipe_message_content = (
             f"Extract the ingredients from the following recipe, phrasing them as search terms for a shopping website "
             f"likely to yield relevant results. The user wants to make {batch_size} batches:" 
@@ -261,13 +269,13 @@ class UnifiedCartAutofillAgent(Agent):
             product_search_term,
             quantity,
             context_thread,
-            verbose,
+            bypass_retry,
             retry_count,
-            bypass_retry
+            verbose,
         )
         return selected_product
 
-    def select_product(self, available_products, item_name, item_quantity, context, verbose=False, retry_count=0, bypass_retry=True):
+    def select_product(self, available_products, item_name, item_quantity, context, bypass_retry=True, retry_count=0, verbose=False):
         itemIds = [product.get('itemId') for product in available_products if 'itemId' in product]
         products_filtered_props = filter_walmart_search_result_props(available_products)
         products_str = yaml.dump(products_filtered_props, sort_keys=False)
@@ -296,19 +304,23 @@ class UnifiedCartAutofillAgent(Agent):
         tool_call_name = self.llm_api_wrapper.get_name_from_tool_call(tool_call)
         tool_call_args = self.llm_api_wrapper.get_arguments_from_tool_call(tool_call)
         if tool_call_name == self.llm_api_wrapper.get_tool_name_from_definition(select_best_item_tool_def):
-            itemId = tool_call_args.get('itemId')
-            product_quantity = tool_call_args.get('quantity')
+            chosen_itemId = tool_call_args.get('itemId')
+            chosen_quantity = tool_call_args.get('quantity')
+            rationale = tool_call_args.get('rationale')
             # Check for invalid selections.
             retry_flag = False
             retry_reason = ""
-            if itemId not in itemIds:
+            if chosen_itemId not in itemIds:
+                tool_call_response_content = f"Product selection failed: itemId \"{chosen_itemId}\" not a valid selection."
                 retry_reason = "invalid_itemId"
                 retry_flag = True
-            elif product_quantity < 1:
+            elif chosen_quantity < 1:
+                tool_call_response_content = f"Product selection failed: quantity \"{chosen_quantity}\" is invalid (cannot be < 1)."
                 retry_reason = "invalid_quantity"
                 retry_flag = True
+            else:
+                tool_call_response_content = "Product selection successful."
 
-            tool_call_response_content = "Product selection successful." if not retry_flag else ""
             tool_message = self.llm_api_wrapper.create_tool_response_message(
                 tool_call_id=tool_call_id,
                 function_name=tool_call_name,
@@ -319,16 +331,36 @@ class UnifiedCartAutofillAgent(Agent):
                 if bypass_retry:
                     if verbose:
                         print(f"Bypassing retry for item '{item_name}' due to bypass flag, skipping this item.\n")
-                    return {'rationale': f"Product selection for {item_name} skipped due to bypass retry setting.", 'itemId': 0, 'quantity': 0}
+                    return {'itemId': 0, 'quantity': 0, 'seller': 'walmart', 'rationale': f"Product selection for {item_name} skipped due to bypass retry setting."}
                 if retry_count >= self.max_retries:
                     if verbose:
                         print(f"Maximum retries ({self.max_retries}) exceeded for item '{item_name}'. Skipping this item.\n")
-                    return {'rationale': f'Failed to select product for {item_name} after {retry_count} attempts.', 'itemId': 0, 'quantity': 0}
+                    return {'itemId': 0, 'quantity': 0, 'seller': 'walmart', 'rationale': f'Failed to select product for {item_name} after {retry_count} attempts.'}
                 if verbose:
-                    print(f"Retrying product selection for \"{item_name}\". Reason: {retry_reason}. Retry count: {retry_count + 1}")
-                selected_product = asyncio.run(self.retry_product_selection(context, retry_count=retry_count + 1))
+                    print(f"Retrying product selection for \"{item_name}\". Reason: {retry_reason}. Retry count: {retry_count+1}")
+                selected_product = asyncio.run(self.retry_product_selection(context, retry_count=retry_count+1))
                 return selected_product
-            return tool_call_args
+            else:
+                # Return the product choice and its info.
+                chosen_index = next((i for i, product in enumerate(available_products) if product.get('itemId') == chosen_itemId), None)
+                try:
+                    item_details = available_products[chosen_index]
+                    substitutes = []
+                    for i, item in enumerate(available_products):
+                        if i != chosen_index:
+                            substitutes.append({'item_details': item})
+                except IndexError:
+                    item_details = None
+                    substitutes = None
+
+                return {
+                    'itemId': chosen_itemId,
+                    'quantity': chosen_quantity,
+                    'seller': 'walmart',
+                    'rationale': rationale,
+                    'item_details': item_details,
+                    'substitutes': substitutes,
+                }
         else:
             raise Exception(f"Unexpected tool call name: {tool_call_name}")
 
@@ -366,6 +398,7 @@ class UnifiedCartAutofillAgent(Agent):
 if __name__ == "__main__":
     agent = UnifiedCartAutofillAgent()
     example_recipe = select_file_and_extract_text(verbose=True)
-    example_cart_url = asyncio.run(agent.get_cart_from_recipe(example_recipe, verbose=False))
+    example_cart = asyncio.run(agent.get_cart_from_recipe(example_recipe, verbose=False))
+    example_cart_url = agent.walmart_api_wrapper.generate_walmart_cart_url(example_cart)
     print(f"Generated Walmart Cart URL: {example_cart_url}")
     # Expected Output: Generated Walmart Cart URL: https://www.walmart.com/cart?items=...

@@ -343,12 +343,17 @@ class UnifiedCartAutofillAgent(Agent):
             else:
                 # Return the selected product.
                 index = next((i for i, product in enumerate(available_products) if product.get('itemId') == itemId), None)
+                try:
+                    item_details = available_products[index] if index is not None else None
+                except IndexError:
+                    item_details = None
+
                 return {
                     'itemId': itemId,
                     'quantity': product_quantity,
                     'seller': 'walmart',
                     'rationale': rationale,
-                    'item_details': available_products[index] if index is not None else None,
+                    'item_details': item_details,
                 }
         else:
             raise Exception(f"Unexpected tool call name: {tool_call_name}")

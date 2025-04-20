@@ -1,14 +1,16 @@
 import hashlib
-import requests
+# import requests
 import PyPDF2
 import io
 import streamlit as st
-from datetime import datetime
-
+# from datetime import datetime
+# from components.upload import upload_panel
+from components.ingredient_selector import ingredient_selector_panel
+# from components.cart_preview import cart_preview_panel
 # --------------------------------------------------------------------
 # Basic page config & Walmart-like CSS
 # --------------------------------------------------------------------
-st.set_page_config("Walmart Recipe 🛒", layout="centered", page_icon="🛒")
+st.set_page_config(page_title="ReciPDF to Walmart Cart", layout="centered", page_icon="🛒")
 st.markdown(
     """
     <style>
@@ -19,17 +21,50 @@ st.markdown(
     """,
     unsafe_allow_html=True,
 )
-
-st.title("Walmart‑style Recipe & Product Quick Prototype")
+st.title("🛒 ReciPDF → Walmart Shopping Cart")
 
 # --------------------------------------------------------------------
-# 1.  Light “profile” / pref store in session_state
+# Light “profile” / pref store in session_state
 # --------------------------------------------------------------------
+st.sidebar.header("My default filters")
+user = st.sidebar.text_input("Username (optional)", key="uname")
 if "profiles" not in st.session_state:
     st.session_state.profiles = {}
-
-user = st.sidebar.text_input("Username (optional)", key="uname")
 prefs = st.session_state.profiles.setdefault(user, {}) if user else {}
+
+# ------------------------------------------------------------------#
+# Compact preference panel (sidebar) – stored in session_state
+# ------------------------------------------------------------------#
+
+price = st.slider("Max price", 0.0, 100.0, prefs.get("price", 25.0))
+rating = st.slider("Min rating", 0.0, 5.0, prefs.get("rating", 4.0))
+diet  = st.selectbox(
+    "Diet",
+    ["None", "Vegan", "Gluten‑Free", "Keto"],
+    index=["None", "Vegan", "Gluten‑Free", "Keto"].index(prefs.get("diet", "None")),
+)
+
+if st.sidebar.button("Save prefs"):
+    prefs.update(price=price, rating=rating, diet=diet)
+    st.sidebar.success("Saved (session only)")
+
+# Initialize session state
+if "parsed_ingredients" not in st.session_state:
+    st.session_state.parsed_ingredients = []
+
+if "matched_products" not in st.session_state:
+    st.session_state.matched_products = []
+
+# PHASE 1: Upload + Extract
+# upload_panel()
+
+# PHASE 2: Match to Walmart products
+if st.session_state.parsed_ingredients:
+    ingredient_selector_panel()
+
+# PHASE 3: Cart preview
+# if st.session_state.matched_products:
+#     cart_preview_panel()
 
 # --------------------------------------------------------------------
 # 2. Caching the PDF Parsing
@@ -47,22 +82,28 @@ def parse_pdf_file(file_bytes: bytes) -> str:
 # ------------------------------------------------------------------#
 # 3 .   UI divided in two tabs – avoids needless work
 # ------------------------------------------------------------------#
-tab_recipe, tab_search = st.tabs(["📄  Recipe upload", "🔎  Walmart search"])
+tab_recipe, tab_search, tab_cart = st.tabs(["📄 Upload", "🔎 Search", "🧾 Cart"])
 
 # ──────────────────────────────────────────────────────────────────
 with tab_recipe:
-    st.subheader("Upload recipe (PDF or TXT)")
+    st.subheader("Upload recipe (PDF or TXT)")
     up = st.file_uploader("Choose file", type=["pdf", "txt"])
+    paste_text = st.text_area("Or paste recipe text below")
 
+    recipe_text = ""
     if up:
         data = up.read()
-        key = hashlib.md5(data).hexdigest()            # fingerprint for cache
+        key = hashlib.md5(data).hexdigest()  # fingerprint for cache
 
         if up.type == "application/pdf":
             recipe_text = parse_pdf_file(data)  # cached
         else:
             recipe_text = data.decode(errors="ignore")
 
+    elif paste_text.strip():
+        recipe_text = paste_text
+
+    if recipe_text:
         st.text_area("Recipe text", recipe_text, height=200)
 
         ing_lines = [
@@ -75,6 +116,59 @@ with tab_recipe:
             st.write("\n".join(f"- {l}" for l in ing_lines))
         else:
             st.info("No obvious ingredient headings detected.")
+
+        if st.button("Extract Ingredients"):
+            # Clear matched product and previous selections
+            st.session_state.matched_products = []
+
+            # Reset previous radio button keys
+            for idx, item in enumerate(st.session_state.get('parsed_ingredients', [])):
+                k = f"sel_{idx}_{item['ingredient'].replace(' ', '_')}"
+                if k in st.session_state:
+                    del st.session_state[k]
+
+            # Stub: populate parsed ingredients (replace with NLP later)
+            st.session_state.parsed_ingredients = [
+                {"ingredient": "green bell pepper", "quantity": "1 large"},
+                {"ingredient": "swiss cheese", "quantity": "4 slices"}
+            ]
+            st.success("Ingredients extracted.")
+    # -------------------------------------------
+    # 🛒 Add Walmart Match UI once ingredients exist
+    # -------------------------------------------
+    if st.session_state.get("parsed_ingredients"):
+        st.markdown("---")
+        st.header("2. Match Ingredients to Walmart Products")
+
+        cols = st.columns(2)
+        with cols[0]:
+            # Step 1: Loop over ingredients and show radio selectors
+            for idx, item in enumerate(st.session_state.parsed_ingredients):
+                with st.expander(f"🧾 {item['ingredient']} ({item['quantity']})"):
+                    selected = st.radio(
+                        f"Select product for {item['ingredient']}",
+                        [
+                            f"GV {item['ingredient'].title()} - $2.99",
+                            f"Organic {item['ingredient']} - $3.49"
+                        ],
+                        key=f"sel_{idx}_{item['ingredient'].replace(' ', '_')}"
+                    )
+                    rationale = "Best price for quantity." if 'GV' in selected else "Organic preference."
+                    st.text(f"Reason: {rationale}")
+
+            # ✅ Step 2: ONE button, outside the loop, with a stable key
+            if st.button("Confirm Matches", key="confirm_matches_button"):
+                matched = []
+                for idx, item in enumerate(st.session_state.parsed_ingredients):
+                    choice = st.session_state.get(f"sel_{idx}_{item['ingredient'].replace(' ', '_')}")
+                    if choice:
+                        matched.append({
+                            "name": choice.split(" - ")[0],
+                            "itemId": 100000 + idx,  # placeholder
+                            "price": float(choice.split(" - $")[-1])
+                        })
+                st.session_state.matched_products = matched
+                st.success("Products selected.")
 
 # ──────────────────────────────────────────────────────────────────
 with tab_search:
@@ -99,30 +193,28 @@ with tab_search:
                 "field": field,
                 "value": value,
                 "items": [
-                    {"itemId": 123456, "name": f"Mock Product for {value}", "salePrice": 3.99},
-                    {"itemId": 789012, "name": f"Another Mock {value} Product", "salePrice": 5.49}
+                    {"name": f"Mock Product for {value}","itemId": 46491801,  "price": 2.99},
+                    {"name": f"Another Mock {value} Product","itemId": 10452368, "price": 3.49}
                 ]
             }
         )   
-    st.success("Data fetched (mock). Integrate your real API key for live results!")
+        st.success("Data fetched (mock). Integrate your real API key for live results!")
+# ──────────────────────────────────────────────────────────────────
+with tab_cart:
+    if st.session_state.get("matched_products"):
+        st.subheader("3. Cart Preview & Export")
+        total = 0.0
+        for item in st.session_state.matched_products:
+            st.markdown(f"- **{item['name']}** — ${item['price']}")
+            total += item['price']
 
-# ------------------------------------------------------------------#
-# 4 .   Compact preference panel (sidebar) – stored in session_state
-# ------------------------------------------------------------------#
-with st.sidebar:
-    st.header("My default filters")
-    price = st.slider("Max price", 0.0, 100.0, prefs.get("price", 25.0))
-    rating = st.slider("Min rating", 0.0, 5.0, prefs.get("rating", 4.0))
-    diet  = st.selectbox(
-        "Diet",
-        ["None", "Vegan", "Gluten‑Free", "Keto"],
-        index=["None", "Vegan", "Gluten‑Free", "Keto"].index(prefs.get("diet", "None")),
-    )
+        st.markdown(f"**Total:** ${total:.2f}")
 
-    if st.button("Save prefs"):
-        prefs.update(price=price, rating=rating, diet=diet)
-        st.success("Saved (session only)")
+        ids = ",".join(str(item['itemId']) for item in st.session_state.matched_products)
+        url = f"https://affil.walmart.com/cart/addToCart?items={ids}"
 
+        st.text_input("Cart URL", value=url)
+        st.markdown(f"[Open in Walmart Cart]({url})")
 
 # --------------------------------------------------------------------
 # 5. User Preferences (Sliders / Selectboxes)

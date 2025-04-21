@@ -1,3 +1,4 @@
 streamlit>=1.30
 PyPDF2
 watchdog        # optional but speeds hot‑reload
+python-dotenv

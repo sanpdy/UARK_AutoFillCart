@@ -1,8 +1,12 @@
+from agent_definitions.agents.unified_cart_autofill_agent import UnifiedCartAutofillAgent
+import asyncio
 import hashlib
 # import requests
 import PyPDF2
 import io
 import streamlit as st
+import uuid
+import logging
 # from datetime import datetime
 # from components.upload import upload_panel
 from components.ingredient_selector import ingredient_selector_panel
@@ -11,6 +15,9 @@ from components.ingredient_selector import ingredient_selector_panel
 # Basic page config & Walmart-like CSS
 # --------------------------------------------------------------------
 st.set_page_config(page_title="ReciPDF to Walmart Cart", layout="centered", page_icon="🛒")
+if "agent" not in st.session_state:
+    st.session_state.agent = UnifiedCartAutofillAgent()
+logging.exception("Agent failed")
 st.markdown(
     """
     <style>
@@ -31,21 +38,42 @@ user = st.sidebar.text_input("Username (optional)", key="uname")
 if "profiles" not in st.session_state:
     st.session_state.profiles = {}
 prefs = st.session_state.profiles.setdefault(user, {}) if user else {}
-
+mode = st.sidebar.radio("Cart generation mode:", ["Manual Mock UI", "Use Agent (AI-driven)"])
+st.session_state.mode = mode
 # ------------------------------------------------------------------#
 # Compact preference panel (sidebar) – stored in session_state
 # ------------------------------------------------------------------#
+# Define users preferences as a dictionary
+PREFERENCE_FIELDS = {
+    "Price": ("slider", (0.0, 100.0, 25.0)),
+    "CustomerRating": ("slider", (0.0, 5.0, 4.0)),
+    "FulfillmentSpeed": ("select", ["Same Day", "Next Day", "Two Day", "Standard"]),
+    "Availability": ("select", ["In Stock", "Out of Stock", "Limited Stock"]),
+    "Brand": ("text", ""),
+    "Category": ("text", ""),
+    "Form": ("select", ["N/A", "Whole", "Sliced", "Powder", "Liquid", "Granulated"]),
+    "Container": ("select", ["N/A", "Box", "Bag", "Bottle", "Carton", "Jar"]),
+    "MeatType": ("select", ["N/A", "Chicken", "Beef", "Pork", "Turkey", "Fish", "Seafood"]),
+    "SpecialDietNeeds": ("select", ["None", "Vegan", "Gluten-Free", "Keto-Friendly", "Organic", "Vegetarian"]),
+}
+# Dynamically render sidebar fields
+st.sidebar.markdown("### 🧰 Product Filters")
 
-price = st.slider("Max price", 0.0, 100.0, prefs.get("price", 25.0))
-rating = st.slider("Min rating", 0.0, 5.0, prefs.get("rating", 4.0))
-diet  = st.selectbox(
-    "Diet",
-    ["None", "Vegan", "Gluten‑Free", "Keto"],
-    index=["None", "Vegan", "Gluten‑Free", "Keto"].index(prefs.get("diet", "None")),
-)
+for field, field_info in PREFERENCE_FIELDS.items():
+    field_type = field_info[0]
+    default_value = prefs.get(field, field_info[1] if field_type == "text" else field_info[1][-1])
+
+    if field_type == "slider":
+        min_val, max_val, default = field_info[1]
+        prefs[field] = st.sidebar.slider(field, min_val, max_val, prefs.get(field, default))
+    elif field_type == "select":
+        options = field_info[1]
+        prefs[field] = st.sidebar.selectbox(field, options, index=options.index(prefs.get(field, options[0])))
+    elif field_type == "text":
+        prefs[field] = st.sidebar.text_input(field, value=default_value)
 
 if st.sidebar.button("Save prefs"):
-    prefs.update(price=price, rating=rating, diet=diet)
+    st.session_state.profiles[user] = prefs
     st.sidebar.success("Saved (session only)")
 
 # Initialize session state
@@ -82,7 +110,7 @@ def parse_pdf_file(file_bytes: bytes) -> str:
 # ------------------------------------------------------------------#
 # 3 .   UI divided in two tabs – avoids needless work
 # ------------------------------------------------------------------#
-tab_recipe, tab_search, tab_cart = st.tabs(["📄 Upload", "🔎 Search", "🧾 Cart"])
+tabs = ["📄 Upload", "🧾 Cart"] if mode == "Use Agent (AI-driven)" else ["📄 Upload", "🔎 Search", "🧾 Cart"]
 
 # ──────────────────────────────────────────────────────────────────
 with tab_recipe:
@@ -128,15 +156,23 @@ with tab_recipe:
                     del st.session_state[k]
 
             # Stub: populate parsed ingredients (replace with NLP later)
-            st.session_state.parsed_ingredients = [
-                {"ingredient": "green bell pepper", "quantity": "1 large"},
-                {"ingredient": "swiss cheese", "quantity": "4 slices"}
-            ]
-            st.success("Ingredients extracted.")
+            if recipe_text:
+                with st.spinner("Making good choices..."):
+                    try:
+                        result = asyncio.run(st.session_state.agent.get_cart_from_recipe(recipe_text))
+
+                        st.session_state.cart_url = result["url"]
+                        st.session_state.cart_items = result.get("items", [])
+                        st.session_state.cart_summary = result.get("summary", "")
+            
+                        st.success("Cart generated successfully!")
+            
+                    except Exception as e:
+                        st.error(f"Agent error: {e}")
     # -------------------------------------------
     # 🛒 Add Walmart Match UI once ingredients exist
     # -------------------------------------------
-    if st.session_state.get("parsed_ingredients"):
+    if st.session_state.mode == "Manual Mock UI" and st.session_state.get("parsed_ingredients"):
         st.markdown("---")
         st.header("2. Match Ingredients to Walmart Products")
 
@@ -164,7 +200,7 @@ with tab_recipe:
                     if choice:
                         matched.append({
                             "name": choice.split(" - ")[0],
-                            "itemId": 100000 + idx,  # placeholder
+                            "itemId": uuid.uuid4().int >> 96,
                             "price": float(choice.split(" - $")[-1])
                         })
                 st.session_state.matched_products = matched
@@ -201,20 +237,27 @@ with tab_search:
         st.success("Data fetched (mock). Integrate your real API key for live results!")
 # ──────────────────────────────────────────────────────────────────
 with tab_cart:
-    if st.session_state.get("matched_products"):
+    if st.session_state.mode == "Use Agent (AI-driven)" and st.session_state.get("cart_url"):
         st.subheader("3. Cart Preview & Export")
-        total = 0.0
-        for item in st.session_state.matched_products:
-            st.markdown(f"- **{item['name']}** — ${item['price']}")
-            total += item['price']
-
-        st.markdown(f"**Total:** ${total:.2f}")
-
-        ids = ",".join(str(item['itemId']) for item in st.session_state.matched_products)
-        url = f"https://affil.walmart.com/cart/addToCart?items={ids}"
-
+    
+        url = st.session_state.cart_url
         st.text_input("Cart URL", value=url)
         st.markdown(f"[Open in Walmart Cart]({url})")
+    # Mock setup
+    # if st.session_state.get("matched_products"):
+    #     st.subheader("3. Cart Preview & Export")
+    #     total = 0.0
+    #     for item in st.session_state.matched_products:
+    #         st.markdown(f"- **{item['name']}** — ${item['price']}")
+    #         total += item['price']
+
+    #     st.markdown(f"**Total:** ${total:.2f}")
+
+    #     ids = ",".join(str(item['itemId']) for item in st.session_state.matched_products)
+    #     url = f"https://affil.walmart.com/cart/addToCart?items={ids}"
+
+    #     st.text_input("Cart URL", value=url)
+    #     st.markdown(f"[Open in Walmart Cart]({url})")
 
 # --------------------------------------------------------------------
 # 5. User Preferences (Sliders / Selectboxes)

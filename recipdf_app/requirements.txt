@@ -1,4 +1,16 @@
 streamlit>=1.30
 PyPDF2
 watchdog        # optional but speeds hot‑reload
-python-dotenv
+dotenv~=0.9.9
+python-dotenv~=1.1.0
+openai~=1.60.1
+anthropic~=0.49.0
+colorama~=0.4.6
+pydantic~=2.10.3
+pymupdf4llm~=0.0.19
+requests~=2.32.3
+beautifulsoup4~=4.13.3
+playwright~=1.51.0
+wapy~=1.0.0
+cryptography~=44.0.2
+pyyaml~=6.0.2

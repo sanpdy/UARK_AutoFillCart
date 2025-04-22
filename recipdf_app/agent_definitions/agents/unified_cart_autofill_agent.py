@@ -1,12 +1,17 @@
+# UnifiedCartAutofillAgent refactor with caching, token tracking, and quota-aware fallback
 import asyncio
 import copy
 import json
 import yaml
+import hashlib
+import os
+from functools import lru_cache
 
-from agent_definitions.agent_superclass import Agent
-from recipe_processing import select_file_and_extract_text
-from walmart_affiliate_api_utils import WalmartAPI, filter_walmart_search_result_props
+from recipdf_app.agent_definitions.agent_superclass import Agent
+from recipdf_app.recipe_processing import select_file_and_extract_text
+from recipdf_app.walmart_affiliate_api_utils import WalmartAPI, filter_walmart_search_result_props
 
+#create output_shopping_list_tool_def, retry_product_search_tool_def, select_best_item_tool_def
 output_shopping_list_tool_def = {
     "type": "function",
     "function": {
@@ -102,107 +107,56 @@ select_best_item_tool_def = {
         }
     }
 }
-
-
+TOKEN_LIMIT = 100000  # adjustable threshold (in tokens)
+MOCK_ITEMS = [
+    {"name": "Mock Flour", "itemId": 111, "price": 1.99},
+    {"name": "Mock Sugar", "itemId": 112, "price": 2.99}
+]
 class UnifiedCartAutofillAgent(Agent):
     def __init__(self, llm='gpt-4o-mini', llm_api_provider='openai', max_retries=1):
         system_prompt = "You are an agent in charge of finding items from an online shopping website to put in the user's cart based on a recipe."
         super().__init__(llm=llm, llm_api_provider=llm_api_provider, system_prompt=system_prompt)
         self.walmart_api_wrapper = WalmartAPI(
-            consumer_id="fe944cf5-2cd6-4664-8d8a-1a6e0882d722",
+            consumer_id=os.getenv("WALMART_CONSUMER_ID"), # need to add consumer_id
             key_version="1",
-            key_file_path=r"C:\Users\Stephen Pierson\.ssh\rsa_key_20250410_v2"
+            key_file_path=os.path.expanduser(os.getenv("WALMART_RSA_KEY_PATH")) # need to add RSA key_file_path
         )
         # Set the maximum retries for a single shopping list item.
         self.max_retries = max_retries
-        self.ingredient_extraction_context = None
+        self.ingredient_extraction_context = []
+        self.token_usage = 0
         self.reset()
 
     def reset(self):
         self.ingredient_extraction_context = []
+        self.token_usage = 0
         self.reset_context()
 
-    async def get_cart_from_recipe(self, recipe: str, batch_size: str = "1", verbose=False):
-        shopping_list = self.extract_shopping_list_from_recipe(recipe, batch_size)
-        # Output:
-        #  [{"ingredient": "flour", "quantity": "1 cup"}, ...]
-        print(f"Shopping List ({len(shopping_list)} items):\n"
-              f"{json.dumps(shopping_list, indent=2)}\n")
-        # Note: the new bypass flag is passed here. When set to True, retry_product_selection is bypassed.
-        return await self.get_cart_from_shopping_list(
-            shopping_list,
-            initial_agent_context=self.ingredient_extraction_context,
-            verbose=verbose,
-            bypass_retry=True
-        )
+    def _track_tokens(self, completion):
+        used = getattr(getattr(completion, 'usage', None), 'total_tokens', 0)
+        self.token_usage += used
+        print(f"[Token usage] +{used} tokens | Total: {self.token_usage}")
 
-    async def get_cart_from_shopping_list(self, shopping_list: list, initial_agent_context=None, verbose=False, bypass_retry=True):
-        """
-        Generate an online cart URL from a shopping list.
+    def _should_fallback_to_mock(self):
+        return self.token_usage >= TOKEN_LIMIT
 
-        This function processes a shopping list of items, retrieves product details
-        from the Walmart API, and generates a cart URL for the selected products.
+    def _make_hash(self, recipe):
+        return hashlib.md5(recipe.encode()).hexdigest()
 
-        Parameters:
-            shopping_list (list): A list of dictionaries, where each dictionary contains
-                details about a product to search for (e.g., 'product' and 'quantity').
-            initial_agent_context (list, optional): The initial context for the agent,
-                used to maintain conversation state. Defaults to an empty list.
-            verbose (bool, optional): Whether to print detailed logs for debugging.
-                Defaults to False.
-            bypass_retry (bool, optional): If True, do not retry on failures and instead
-                warn the user and skip the item.
-                Defaults to False.
+    @lru_cache(maxsize=32)
+    def cached_shopping_list(self, recipe_hash):
+        return self._extract_shopping_list_from_recipe_uncached(recipe_hash)
 
-        Returns:
-            str: A cart URL containing the selected products.
-        """
-        if not initial_agent_context:
-            initial_agent_context = []
-        branching_context_threads = [copy.deepcopy(initial_agent_context) for _ in shopping_list]
-        tasks = [
-            self.process_shopping_list_item(item_data,
-                                            context_thread=branching_context_threads[i],
-                                            verbose=verbose,
-                                            retry_count=0,
-                                            bypass_retry=bypass_retry)
-            for i, item_data in enumerate(shopping_list)
-        ]
-        # Gather results from processing each shopping list item.
-        items = await asyncio.gather(*tasks)
+    def extract_shopping_list_from_recipe(self, recipe, batch_size="1"):
+        if self._should_fallback_to_mock():
+            print("[Fallback] Returning mock shopping list due to quota.")
+            return [{"ingredient": "flour", "quantity": "1 cup", "product": "flour", "prep_work_reasoning": ""}]
+        return self._extract_shopping_list_from_recipe_uncached(recipe, batch_size)
 
-        for item in items:
-            print(json.dumps(item, sort_keys=True))
-        print()
-
-        # Identify and print out items that have quantity == 0,
-        # and filter them from the list that will be passed to generate_walmart_cart_url.
-        skipped_item_names = []
-        filtered_items = []
-        for idx, result in enumerate(items):
-            if result.get("quantity", 0) == 0:
-                # Use the ingredient name from the original shopping list for reporting.
-                skipped_item_names.append(shopping_list[idx].get("ingredient", "Unknown"))
-            else:
-                filtered_items.append(result)
-
-        if skipped_item_names:
-            print("The following items were skipped due to being unable to find a matching product:")
-            for name in skipped_item_names:
-                print(f"- {name}")
-            print()
-
-        # Generate the cart URL with the filtered items.
-        cart_url = self.walmart_api_wrapper.generate_walmart_cart_url(filtered_items)
-        return cart_url
-
-    def extract_shopping_list_from_recipe(self, recipe: str, batch_size: str = "1"):
-        recipe_message_content = (
-            f"Extract the ingredients from the following recipe, phrasing them as search terms for a shopping website "
-            f"likely to yield relevant results. The user wants to make {batch_size} batches:" 
-            f"\n\n<recipe>\n{recipe}\n</recipe>")
-        context = [self.system_message, {'role': 'user', 'content': recipe_message_content}]
-        response_message = self.llm_api_wrapper.query(
+    def _extract_shopping_list_from_recipe_uncached(self, recipe, batch_size="1"):
+        prompt = f"Extract ingredients for {batch_size} batches:\n<recipe>{recipe}</recipe>"
+        context = [self.system_message, {'role': 'user', 'content': prompt}]
+        response = self.llm_api_wrapper.query(
             model=self.model,
             context=context,
             temperature=0.0,
@@ -210,162 +164,124 @@ class UnifiedCartAutofillAgent(Agent):
             tool_choice='required',
             parallel_tool_calls=False,
         )
-        context.append(response_message)
-        tool_calls = self.llm_api_wrapper.get_tool_calls(response_message)
-        if not tool_calls:
-            raise Exception("No tool call received from LLM query to retrieve shopping list")
-        tool_call = next(iter(tool_calls))
-        tool_call_id = tool_call.id
-        tool_call_name = self.llm_api_wrapper.get_name_from_tool_call(tool_call)
-        tool_call_args = self.llm_api_wrapper.get_arguments_from_tool_call(tool_call)
-        if tool_call_name == self.llm_api_wrapper.get_tool_name_from_definition(output_shopping_list_tool_def):
-            shoppingList = tool_call_args.get('shoppingList')
-            tool_message = self.llm_api_wrapper.create_tool_response_message(
-                tool_call_id=tool_call_id,
-                function_name=tool_call_name,
-                function_response="Ingredients parsed successfully."
-            )
-            context.append(tool_message)
-            self.ingredient_extraction_context = context
-            return shoppingList
-        else:
-            raise Exception(f"Unexpected tool call name: {tool_call_name}")
+        self._track_tokens(response)
+        tool_call = self.llm_api_wrapper.get_tool_calls(response)[0]
+        return self.llm_api_wrapper.get_arguments_from_tool_call(tool_call).get('shoppingList')
 
-    async def process_shopping_list_item(self, item_search_data, context_thread, verbose=False, retry_count=0, bypass_retry=True):
-        """Process a single ingredient asynchronously."""
-        product_search_term = item_search_data.get("product")
-        quantity = item_search_data.get("quantity")
-        search_results_str = await asyncio.to_thread(self.walmart_api_wrapper.get_walmart_search_results,
-                                                     product_search_term)
-        search_results = json.loads(search_results_str)
-        products = search_results.get('items', [])
-        if not products:
-            if bypass_retry:
-                if verbose:
-                    print(f"No products found for search term '{product_search_term}'. Bypassing retry and skipping item.\n")
-                return {'rationale': f"Failed to retrieve products for {product_search_term} - skipping due to bypass retry setting.",
-                        'itemId': 0, 'quantity': 0}
-            if retry_count >= self.max_retries:
-                if verbose:
-                    print(f"Maximum retries ({self.max_retries}) exceeded for search term '{product_search_term}'. Skipping this item.\n")
-                return {'rationale': f'Failed to retrieve products for {product_search_term} after {retry_count} attempts.',
-                        'itemId': 0, 'quantity': 0}
-            if verbose:
-                print(f"No products found for search term '{product_search_term}'. Retrying product search. Retry count: {retry_count + 1}")
-            return await self.retry_product_selection(context_thread, retry_count=retry_count + 1)
+    async def get_cart_from_recipe(self, recipe, batch_size="1", verbose=False):
+        if self._should_fallback_to_mock():
+            return {
+                "url": "https://www.walmart.com/cart?mock=true",
+                "items": MOCK_ITEMS,
+                "summary": "Quota exceeded. Returned mock items."
+            }
+        shopping_list = self.extract_shopping_list_from_recipe(recipe, batch_size)
+        return await self.get_cart_from_shopping_list(shopping_list, verbose=verbose, bypass_retry=True)
 
-        # Pass the bypass flag along to select_product.
-        selected_product = await asyncio.to_thread(
-            self.select_product,
-            products,
-            product_search_term,
-            quantity,
-            context_thread,
-            verbose,
-            retry_count,
-            bypass_retry
+    async def get_cart_from_shopping_list(self, shopping_list, initial_agent_context=None, verbose=False, bypass_retry=True):
+        if self._should_fallback_to_mock():
+            return {
+                "url": "https://www.walmart.com/cart?mock=true",
+                "items": MOCK_ITEMS,
+                "summary": "Quota exceeded. Returned mock items."
+            }
+
+        context = initial_agent_context or []
+        context_threads = [copy.deepcopy(context) for _ in shopping_list]
+
+        tasks = [
+            self.process_shopping_list_item(item, context_threads[i], verbose, 0, bypass_retry)
+            for i, item in enumerate(shopping_list)
+        ]
+        results = await asyncio.gather(*tasks)
+        valid_items = [item for item in results if item.get("quantity", 0) > 0]
+
+        cart_url = self.walmart_api_wrapper.generate_walmart_cart_url(valid_items)
+
+        return {
+            "url": cart_url,
+            "items": valid_items,
+            "summary": f"{len(valid_items)} items added to cart."
+        }
+
+    async def process_shopping_list_item(self, item_data, context, verbose, retry_count, bypass_retry):
+        if self._should_fallback_to_mock():
+            return {"itemId": 0, "quantity": 0, "rationale": "Quota exceeded"}
+
+        product_term = item_data["product"]
+        search_results_str = await asyncio.to_thread(
+            self.walmart_api_wrapper.get_walmart_search_results, product_term
         )
-        return selected_product
+        # ✅ Debug type
+        print("DEBUG type(search_results_str):", type(search_results_str))
+        try:
+            search_results = json.loads(search_results_str) if isinstance(search_results_str, str) else search_results_str
+        except Exception as e:
+            print("Error decoding search results:", e)
+            raise
 
-    def select_product(self, available_products, item_name, item_quantity, context, verbose=False, retry_count=0, bypass_retry=True):
-        itemIds = [product.get('itemId') for product in available_products if 'itemId' in product]
-        products_filtered_props = filter_walmart_search_result_props(available_products)
-        products_str = yaml.dump(products_filtered_props, sort_keys=False)
-        if verbose:
-            print(f"Products found for \"{item_name}\":\n{products_str}")
-        prompt = (f"Requested item: {item_name}\n"
-                  f"Quantity: {item_quantity}\n\n"
-                  f"Please select the product from the list below that best matches the requested item description. "
-                  f"{products_str}\n")
-        user_message = {"role": "user", "content": prompt}
-        context.append(user_message)
-        response_message = self.llm_api_wrapper.query(
+        products = search_results.get('items', [])
+        print("DEBUG products[0]:", products[0] if products else "None")
+
+        #products = json.loads(search_results_str).get('items', [])
+
+        if not products:
+            if bypass_retry or retry_count >= self.max_retries:
+                return {"itemId": 0, "quantity": 0}
+            return await self.retry_product_selection(context, retry_count + 1)
+
+        return await asyncio.to_thread(
+            self.select_product, products, item_data["product"], item_data["quantity"], context, verbose, retry_count, bypass_retry
+        )
+
+    def select_product(self, products, item_name, quantity, context, verbose, retry_count, bypass_retry):
+        # Defensive decode
+        if isinstance(products, str):
+            try:
+                products = json.loads(products)
+            except Exception as e:
+                raise ValueError(f"Failed to decode products JSON string: {e}")
+        if not isinstance(products, list):
+            raise TypeError(f"Expected list of dicts for 'products', got {type(products)} with contents: {products}")
+
+        if not all(isinstance(p, dict) for p in products):
+            raise TypeError("Each product must be a dictionary")
+        filtered = filter_walmart_search_result_props(products[:3])
+        prompt = f"Select best product for: {item_name}\nOptions:\n{yaml.dump(filtered)}"
+        context.append({"role": "user", "content": prompt})
+
+        response = self.llm_api_wrapper.query(
             model=self.model,
             context=context,
             temperature=0.0,
             tools=[select_best_item_tool_def],
             tool_choice='required',
-            parallel_tool_calls=False
+            parallel_tool_calls=False,
         )
-        context.append(response_message)
-        tool_calls = self.llm_api_wrapper.get_tool_calls(response_message)
-        if not tool_calls:
-            raise Exception("No tool call received from LLM query to select the best product")
-        tool_call = next(iter(tool_calls))
-        tool_call_id = tool_call.id
-        tool_call_name = self.llm_api_wrapper.get_name_from_tool_call(tool_call)
-        tool_call_args = self.llm_api_wrapper.get_arguments_from_tool_call(tool_call)
-        if tool_call_name == self.llm_api_wrapper.get_tool_name_from_definition(select_best_item_tool_def):
-            itemId = tool_call_args.get('itemId')
-            product_quantity = tool_call_args.get('quantity')
-            # Check for invalid selections.
-            retry_flag = False
-            retry_reason = ""
-            if itemId not in itemIds:
-                retry_reason = "invalid_itemId"
-                retry_flag = True
-            elif product_quantity < 1:
-                retry_reason = "invalid_quantity"
-                retry_flag = True
+        self._track_tokens(response)
 
-            tool_call_response_content = "Product selection successful." if not retry_flag else ""
-            tool_message = self.llm_api_wrapper.create_tool_response_message(
-                tool_call_id=tool_call_id,
-                function_name=tool_call_name,
-                function_response=tool_call_response_content
-            )
-            context.append(tool_message)
-            if retry_flag:
-                if bypass_retry:
-                    if verbose:
-                        print(f"Bypassing retry for item '{item_name}' due to bypass flag, skipping this item.\n")
-                    return {'rationale': f"Product selection for {item_name} skipped due to bypass retry setting.", 'itemId': 0, 'quantity': 0}
-                if retry_count >= self.max_retries:
-                    if verbose:
-                        print(f"Maximum retries ({self.max_retries}) exceeded for item '{item_name}'. Skipping this item.\n")
-                    return {'rationale': f'Failed to select product for {item_name} after {retry_count} attempts.', 'itemId': 0, 'quantity': 0}
-                if verbose:
-                    print(f"Retrying product selection for \"{item_name}\". Reason: {retry_reason}. Retry count: {retry_count + 1}")
-                selected_product = asyncio.run(self.retry_product_selection(context, retry_count=retry_count + 1))
-                return selected_product
-            return tool_call_args
-        else:
-            raise Exception(f"Unexpected tool call name: {tool_call_name}")
+        tool_call = self.llm_api_wrapper.get_tool_calls(response)[0]
+        return self.llm_api_wrapper.get_arguments_from_tool_call(tool_call)
 
     async def retry_product_selection(self, context, retry_count):
-        """Retry product selection with the current context (async version)"""
-        response_message = self.llm_api_wrapper.query(
+        response = self.llm_api_wrapper.query(
             model=self.model,
             context=context,
             temperature=0.0,
             tools=[retry_product_search_tool_def],
             tool_choice='required',
-            parallel_tool_calls=False
+            parallel_tool_calls=False,
         )
-        context.append(response_message)
-        tool_calls = self.llm_api_wrapper.get_tool_calls(response_message)
-        if not tool_calls:
-            raise Exception("No tool call received from LLM query to retry product search")
-        tool_call = next(iter(tool_calls))
-        tool_call_id = tool_call.id
-        tool_call_name = self.llm_api_wrapper.get_name_from_tool_call(tool_call)
-        tool_call_args = self.llm_api_wrapper.get_arguments_from_tool_call(tool_call)
-        if tool_call_name == self.llm_api_wrapper.get_tool_name_from_definition(retry_product_search_tool_def):
-            tool_message = self.llm_api_wrapper.create_tool_response_message(
-                tool_call_id=tool_call_id,
-                function_name=tool_call_name,
-                function_response="Product search successful."
-            )
-            context.append(tool_message)
-            return await self.process_shopping_list_item(item_search_data=tool_call_args, context_thread=context,
-                                                         verbose=False, retry_count=retry_count)
-        else:
-            raise Exception(f"Unexpected tool call name: {tool_call_name}")
+        self._track_tokens(response)
+
+        tool_call = self.llm_api_wrapper.get_tool_calls(response)[0]
+        args = self.llm_api_wrapper.get_arguments_from_tool_call(tool_call)
+        return await self.process_shopping_list_item(args, context, False, retry_count)
 
 
 if __name__ == "__main__":
     agent = UnifiedCartAutofillAgent()
-    example_recipe = select_file_and_extract_text(verbose=True)
-    example_cart_url = asyncio.run(agent.get_cart_from_recipe(example_recipe, verbose=False))
-    print(f"Generated Walmart Cart URL: {example_cart_url}")
+    recipe = select_file_and_extract_text(verbose=True)
+    result = asyncio.run(agent.get_cart_from_recipe(recipe, verbose=True))
+    print(f"Cart URL: {result['url']}")
     # Expected Output: Generated Walmart Cart URL: https://www.walmart.com/cart?items=...

@@ -15,11 +15,11 @@ import types
 
 import openai
 from openai import OpenAI
-import anthropic
+# import anthropic
 from colorama import Fore, Style
 from pydantic import BaseModel
 
-from load_env import openai_api_key  #, anthropic_api_key
+from recipdf_app.load_env import openai_api_key  #, anthropic_api_key
 
 # Load environment variables from the .env file
 load_dotenv()
@@ -28,7 +28,7 @@ os.system('color')
 
 openai_message_class = openai.types.chat.chat_completion.ChatCompletionMessage
 openai_delta_type = openai.types.chat.chat_completion_chunk.ChoiceDelta
-anthropic_message_class = anthropic.types.Message
+# anthropic_message_class = anthropic.types.Message
 
 # openai_api_key = os.getenv('OPENAI_API_KEY')
 # anthropic_api_key = os.getenv('ANTHROPIC_API_KEY')
@@ -82,8 +82,8 @@ def get_message_role(message):
         role = message.get('role')
     elif isinstance(message, openai_message_class):
         role = message.role
-    elif isinstance(message, anthropic_message_class):
-        role = message.role
+    # elif isinstance(message, anthropic_message_class):
+    #     role = message.role
     else:
         role = None
     return role
@@ -115,9 +115,9 @@ def get_message_content(message, verbose=False):  # TODO: Consider making a func
         if verbose:
             print("\nMessage detected as an OpenAI message type")
         content = message.content
-    elif isinstance(message, anthropic_message_class):
-        if verbose:
-            print("\nMessage detected as an Anthropic message type")
+    # elif isinstance(message, anthropic_message_class):
+    #     if verbose:
+    #         print("\nMessage detected as an Anthropic message type")
         content = message.content[0].text
     else:
         content = None
@@ -148,8 +148,8 @@ def get_message_pydantic_output(message, api_provider='openai'):
 def convert_response_message_to_context(message):
     if isinstance(message, openai_message_class):
         return message
-    elif isinstance(message, anthropic_message_class):
-        return {"role": "assistant", "content": message.content}
+    # elif isinstance(message, anthropic_message_class):
+    #     return {"role": "assistant", "content": message.content}
     return message
 
 
@@ -233,30 +233,6 @@ def pretty_print_tool_options(tool_options: list, api_provider: str = 'openai'):
     print(Style.RESET_ALL)
 
 
-# # Old Version (Does not filter for "wait", "fail", and "done" actions. Also fails to filter procedural code for windows that close then open again due to accessibility glitches)
-# def write_procedural_code_from_action_log(sequential_action_log):
-#     pseudocode = ""
-#     actual_code = ""
-#     for action in sequential_action_log:
-#         if action.get('type') == actionLogEntryTypes.ai_action:
-#             log = action['entry']
-#             code_line = log['code_line']
-#             pseudocode_line = log['pseudocode_line']
-#             pseudocode += pseudocode_line
-#             actual_code += code_line
-#         elif action.get('type') == actionLogEntryTypes.window_closed:
-#             log = action['entry']
-#             line = f"\n# Detected Window Closed: {construct_window_text(log['executable'], log['window_name'], log['handle'])}"
-#             pseudocode += line
-#             actual_code += line
-#         elif action.get('type') == actionLogEntryTypes.window_launched:
-#             log = action['entry']
-#             line = f"\n# Detected Window Launch: {construct_window_text(log['executable'], log['window_name'], log['handle'])}"
-#             pseudocode += line
-#             actual_code += line
-#     return pseudocode, actual_code
-
-
 def compile_open_handles_from_action_log(action_log, verbose=False):
     # Create list of handles for windows interacted with or launched by the Action Agent that remain open
     open_handles_of_interest = set()
@@ -286,7 +262,7 @@ def compile_open_handles_from_action_log(action_log, verbose=False):
     return open_handles_of_interest
 
 
-def user_prompt_to_message(prompt: str, base64_images: list[dict] = None, api_provider: str = 'anthropic') -> dict:  # TODO: Make a method of the llm client wrapper class
+def user_prompt_to_message(prompt: str, base64_images: list[dict] = None, api_provider: str = 'openai') -> dict:  # TODO: Make a method of the llm client wrapper class
     """
     Converts a prompt into a message appendable to the user-assistant context list.
     NOTE: Sending images is only supported by the Anthropic Completions API at this time
@@ -357,28 +333,6 @@ def user_prompt_to_message(prompt: str, base64_images: list[dict] = None, api_pr
 
 def fabricated_assistant_response(content):
     return {'role': 'assistant', 'content': content}
-
-
-# def get_function_name_from_code_block_str(code_block: str):
-#     """
-#     Args:
-#         code_block (str): string containing a function definition at the very beginning
-#     Returns:
-#         function_name (str)
-#     """
-#
-#     # Regular expression to match the function name
-#     pattern = r'def\s+(\w+)\s*\('
-#
-#     # Search for the pattern in the text
-#     match = re.search(pattern, code_block)
-#
-#     # Extract and print the function name
-#     if match:
-#         function_name = match.group(1)
-#         return function_name
-#     else:
-#         return None
 
 
 def load_pickle_file(filepath, default=None, verbose=False):
@@ -714,21 +668,19 @@ class OpenAIClientWrapper:
             query_args["tool_choice"] = tool_choice
             query_args["parallel_tool_calls"] = parallel_tool_calls
 
-        stream = self.client.chat.completions.create(**query_args)
-
-        for chunk in stream:
-            yield chunk
-
+        # stream = self.client.chat.completions.create(**query_args)
+        # response_chunks = list(stream)  # Store the results of the generator in a list # <- this *consumes* the stream
+        # response_content = ""
         response_content = ""
+        for chunk in self.client.chat.completions.create(**query_args):
+            delta = chunk.choices[0].delta
+            delta_content = getattr(delta, "content", None)
+            if delta_content:
+                response_content += delta_content
+                yield delta_content # Only yield clean user-visible content, not whole chunks
 
-        # Loop through the stream of responses
-        for chunk in stream:
-            chunk_content = chunk.choices[0].delta.content
-            if chunk_content is not None:
-                yield chunk_content
-                response_content += chunk_content  # Append content from each delta
-
-        return response_content, stream  # returns
+        # Optionally return full content as final result (not yielded)
+        return response_content
 
     def print_delta(self, delta_role: str, delta_content: str):
         # print(f"new delta: {repr(delta_content)}", end="")
@@ -870,7 +822,7 @@ class OpenAIClientWrapper:
                 query_args["tool_choice"] = tool_choice
 
         completion = self.client.beta.chat.completions.parse(**query_args)
-
+        print(f"Used {completion.usage.total_tokens} tokens")
         response_message = completion.choices[0].message
 
         if verbose:
@@ -906,8 +858,18 @@ class OpenAIClientWrapper:
                 tool_call_names.append(tool_call.function.name)
         return tool_call_names
 
-    def get_name_from_tool_call(self, tool_call) -> str:
-        return tool_call.function.name
+    def get_arguments_from_tool_call(self, tool_call) -> dict:
+        raw_args = tool_call.function.arguments
+        if isinstance(raw_args, str):
+            try:
+                return json.loads(raw_args)
+            except Exception as e:
+                raise ValueError(f"Failed to parse tool_call arguments string: {raw_args}") from e
+        elif isinstance(raw_args, dict):
+            return raw_args
+        else:
+            raise TypeError(f"tool_call.arguments has unsupported type: {type(raw_args)}")
+        
 
     def get_arguments_json_from_tool_call(self, tool_call) -> str:
         return tool_call.function.arguments
@@ -1144,70 +1106,3 @@ class OpenAIClientWrapper:
                 function_response=function_response
             )
             return tool_response_message
-
-
-class AnthropicClientWrapper:
-    # Wrapper for Anthropic Messages API
-    def __init__(self, api_key):
-        self.client = anthropic.Anthropic(api_key=api_key)
-        self.message_type = anthropic_message_class
-
-    def query(self, model, context, max_tokens: int = 2048, temperature=None, tool_choice=None, tools: dict = None):
-        # Returns LLM response message from query
-
-        if not tools:
-            tool_choice = None
-
-        # Anthropic Messages API requires the system prompt as an argument rather than as a list item in messages with a "system" role
-        system_prompt = None
-        if context[0]['role'] == 'system':
-            system_prompt = context[0]['content']
-            context = context[1:]
-
-        anthropic_message_creation_kwargs = {'model': model, 'messages': context, 'max_tokens': max_tokens}
-        if temperature:
-            anthropic_message_creation_kwargs['temperature'] = temperature
-        if system_prompt:
-            anthropic_message_creation_kwargs['system'] = system_prompt
-        if tools:
-            anthropic_message_creation_kwargs['tools'] = tools
-            if tool_choice:
-                anthropic_message_creation_kwargs['tool_choice'] = tool_choice
-
-        try:
-            response_message = self.client.messages.create(**anthropic_message_creation_kwargs)
-        except Exception as e:
-            print("Unable to generate Anthropic response")
-            print(f"Exception: {e}")
-            return e, None
-
-        return response_message
-
-    # def old_query(self, message_content, model, context=None, tools=None, tool_choice=None):
-    #     if not context:
-    #         context = []
-    #     message = {
-    #         'role': 'user',
-    #         'content': message_content
-    #     }
-    #     context.append(message)
-    #
-    #     try:
-    #         completion = self.client.chat.completions.create(
-    #             model=model,
-    #             temperature=0,
-    #             messages=context,
-    #             tools=tools,
-    #             tool_choice=tool_choice
-    #         )
-    #         print("Completion: \n", completion)
-    #         tool_calls = completion.choices[0].message.tool_calls
-    #         response_content = completion.choices[0].message.content
-    #         if response_content:
-    #             response_message = {'role': completion.choices[0].message.role, 'content': response_content}
-    #             context.append(response_message)
-    #         return response_content, tool_calls, context
-    #     except Exception as e:
-    #         print("Unable to generate OpenAI response")
-    #         print(f"Exception: {e}")
-    #         return e, None, context

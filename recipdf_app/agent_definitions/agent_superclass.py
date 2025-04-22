@@ -1,4 +1,4 @@
-from agent_definitions.agent_utilities import get_client_wrapper_for_llm_api_provider
+from recipdf_app.agent_definitions.agent_utilities import get_client_wrapper_for_llm_api_provider
 
 
 # Agent Superclass Definition

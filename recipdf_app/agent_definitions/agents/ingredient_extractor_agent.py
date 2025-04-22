@@ -1,8 +1,8 @@
 import json
 import tkinter as tk
 from tkinter import filedialog
-from agent_definitions.agent_superclass import Agent
-from recipe_processing import select_file_and_extract_text
+from recipdf_app.agent_definitions.agent_superclass import Agent
+from recipdf_app.recipe_processing import select_file_and_extract_text
 
 output_ingredients_tool_def = {
     "type": "function",

@@ -1,9 +1,9 @@
 import yaml
 from pydantic import BaseModel, Field
 
-from agent_definitions.agent_superclass import Agent
-from agent_definitions.agent_utilities import user_prompt_to_message
-from walmart_affiliate_api_utils import filter_walmart_search_result_props
+from recipdf_app.agent_definitions.agent_superclass import Agent
+from recipdf_app.agent_definitions.agent_utilities import user_prompt_to_message
+from recipdf_app.walmart_affiliate_api_utils import filter_walmart_search_result_props
 
 
 output_best_item_tool_def = {
@@ -51,7 +51,14 @@ class ProductSelectionAgent(Agent):
         self.reset_context()
 
     def select_product(self, products, ingredient_name, ingredient_quantity, verbose=False):
-        itemIds = [product.get('itemId') for product in products if 'itemId' in product]
+        itemIds = [
+            product.get("itemId")
+            for product in products
+            if isinstance(product, dict) and "itemId" in product
+        ] # product.get('itemId') for product in products if 'itemId' in product]
+        if not isinstance(products, list) or not all(isinstance(p, dict) for p in products):
+            raise TypeError(f"[ProductSelectionAgent] Expected list of dicts, got: {type(products)} | Sample: {products[:1]}")
+        
         products_filtered_props = filter_walmart_search_result_props(products)
         products_str = yaml.dump(products_filtered_props, sort_keys=False)
         # products_str = json.dumps(products_filtered_props, indent=4)

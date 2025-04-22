@@ -1,4 +1,12 @@
-from agent_definitions.agents.unified_cart_autofill_agent import UnifiedCartAutofillAgent
+import sys
+import os
+
+# # Get the absolute path to the main repo root
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
+# Now you can import modules from agent_definitions
+from recipdf_app.agent_definitions.agents.unified_cart_autofill_agent import UnifiedCartAutofillAgent
+
 import asyncio
 import hashlib
 # import requests
@@ -7,9 +15,13 @@ import io
 import streamlit as st
 import uuid
 import logging
+import traceback
+import json
 # from datetime import datetime
 # from components.upload import upload_panel
-from components.ingredient_selector import ingredient_selector_panel
+from recipdf_app.components.ingredient_selector import ingredient_selector_panel
+# from recipdf_app.components.walmart_style import inject_walmart_style, product_card, cart_summary, walmart_navbar
+
 # from components.cart_preview import cart_preview_panel
 # --------------------------------------------------------------------
 # Basic page config & Walmart-like CSS
@@ -21,14 +33,161 @@ logging.exception("Agent failed")
 st.markdown(
     """
     <style>
-      h1 {color:#007dc6;}
-      .stButton>button {background:#007dc6;color:#fff;border:none;border-radius:4px;}
-      [data-testid=stHeader] {background:#007dc6;}
+    /* ============ GLOBAL TYPOGRAPHY & BASE BACKGROUND ============ */
+    html, body, [data-testid="stAppViewContainer"] {
+        background-color: #f5f5f5;           /* Light gray background for main content */
+        color: #2e2e2e;                      /* Dark gray text color */
+        font-family: "Segoe UI", "Helvetica Neue", sans-serif;  /* Clean sans-serif font */
+        font-size: 16px;                     /* Standard body font size */
+        line-height: 1.6;                    /* Comfortable line spacing */
+    }
+
+    /* ============ SIDEBAR STYLING ============ */
+    [data-testid="stSidebar"] {
+        background-color: #1b1d1f;           /* Dark slate background for sidebar */
+        color: #ffffff;                      /* Default text color: white */
+        padding: 1rem;                       /* Sidebar padding for spacing */
+    }
+
+    [data-testid="stSidebar"] h1,
+    [data-testid="stSidebar"] h2,
+    [data-testid="stSidebar"] h3 {
+        color: #2ea7ff;                      /* Walmart blue for sidebar headings */
+        font-weight: 700;
+    }
+
+    /* ============ FORM CONTROLS IN SIDEBAR ============ */
+    .stTextInput input,
+    .stTextArea textarea,
+    .stSelectbox div[role="combobox"],
+    .stSelectbox div[data-baseweb="select"] {
+        background-color: #2a2c2f !important; /* Match dark mode theme */
+        color: #ffffff !important;            /* White input text */
+        border: 1px solid #444 !important;    /* Subtle gray borders */
+        border-radius: 6px;
+        padding: 0.5em;
+    }
+
+    /* Dropdown options styling (fix white-on-white) */
+    .stSelectbox div[data-baseweb="popover"] div {
+        color: #ffffff;
+        background-color: #2a2c2f;
+    }
+
+    /* Slider value styling */
+    .stSlider .css-1dj0hjr,
+    [data-baseweb="slider"] > div > div > div {
+        color: #ffffff !important;           /* Slider number labels */
+    }
+
+    /* Radio button text */
+    .stRadio label {
+        color: #ffffff !important;
+    }
+
+    /* Sidebar button style */
+    .stButton > button {
+        background-color: #0071ce;           /* Walmart blue */
+        color: white;
+        border-radius: 6px;
+        font-weight: 600;
+        font-size: 15px;
+        padding: 0.5em 1.2em;
+        width: 100%;                         /* Full-width button in sidebar */
+    }
+
+    .stButton > button:hover {
+        background-color: #005ca6;           /* Darker blue on hover */
+    }
+
+    /* ============ TABS STYLING ============ */
+    .stTabs [role="tablist"] {
+        border-bottom: 2px solid #0071ce;    /* Tab bar underline */
+        margin-bottom: 1rem;
+    }
+
+    .stTabs [role="tab"] {
+        color: #2e2e2e;                      /* Inactive tab text */
+        font-weight: 600;
+        font-size: 1.1rem;
+        padding: 0.75em 1.5em;
+    }
+
+    .stTabs [role="tab"][aria-selected="true"] {
+        color: #0071ce;                      /* Active tab color */
+        border-bottom: 4px solid #ffc220;    /* Walmart yellow underline */
+        background-color: #ffffff;           /* White background for active tab */
+    }
+
+    /* ============ HEADINGS ACROSS UI ============ */
+    h1 {
+        color: #0071ce;                      /* Walmart blue for H1 */
+        font-weight: 700;
+        font-size: 2rem;
+    }
+
+    h2, .stMarkdown h2 {
+        color: #333333;
+        font-weight: 600;
+        font-size: 1.5rem;
+    }
+
+    h3, .stMarkdown h3 {
+        color: #333333;
+        font-weight: 600;
+        font-size: 1.25rem;
+    }
+
+    /* ============ GLOBAL INPUT FONT STYLING ============ */
+    input, textarea, select {
+        font-family: inherit;
+        font-size: 15px !important;
+    }
+
+    /* ============ LISTS IN MARKDOWN ============ */
+    ul {
+        padding-left: 1.5rem;
+        margin-top: 0.5rem;
+    }
+
+    li {
+        margin-bottom: 0.4em;
+    }
+
+    /* ============ STATUS MESSAGES (info/success/error) ============ */
+    .stAlert {
+        border-radius: 8px;
+        padding: 1em;
+        font-size: 14px;
+    }
+
+    /* ============ FILE UPLOADER BOX ============ */
+    [data-testid="stFileUploader"] section {
+        background-color: #2a2c2f !important;
+        color: #ffffff !important;
+        border: 1px solid #444;
+        border-radius: 8px;
+    }
+
+    /* ============ TEXT AREA (e.g., Paste Text) ============ */
+    textarea {
+        background-color: #2a2c2f !important;
+        color: #ffffff !important;
+        border: 1px solid #444 !important;
+        border-radius: 6px;
+    }
     </style>
     """,
     unsafe_allow_html=True,
 )
+
 st.title("🛒 ReciPDF → Walmart Shopping Cart")
+
+# # Theme toggle in sidebar
+# st.sidebar.markdown("### Appearance")
+# if "dark_mode" not in st.session_state:
+#     st.session_state.dark_mode = False
+
 
 # --------------------------------------------------------------------
 # Light “profile” / pref store in session_state
@@ -57,7 +216,7 @@ PREFERENCE_FIELDS = {
     "SpecialDietNeeds": ("select", ["None", "Vegan", "Gluten-Free", "Keto-Friendly", "Organic", "Vegetarian"]),
 }
 # Dynamically render sidebar fields
-st.sidebar.markdown("### 🧰 Product Filters")
+st.sidebar.markdown("### Product Filters")
 
 for field, field_info in PREFERENCE_FIELDS.items():
     field_type = field_info[0]
@@ -110,7 +269,10 @@ def parse_pdf_file(file_bytes: bytes) -> str:
 # ------------------------------------------------------------------#
 # 3 .   UI divided in two tabs – avoids needless work
 # ------------------------------------------------------------------#
-tabs = ["📄 Upload", "🧾 Cart"] if mode == "Use Agent (AI-driven)" else ["📄 Upload", "🔎 Search", "🧾 Cart"]
+if mode == "Use Agent (AI-driven)":
+    tab_recipe, tab_cart = st.tabs(["📄 Upload", "🧾 Cart"])
+else:
+    tab_recipe, tab_search, tab_cart = st.tabs(["📄 Upload", "🔎 Search", "🧾 Cart"])
 
 # ──────────────────────────────────────────────────────────────────
 with tab_recipe:
@@ -146,6 +308,10 @@ with tab_recipe:
             st.info("No obvious ingredient headings detected.")
 
         if st.button("Extract Ingredients"):
+            if not isinstance(recipe_text, str) or not recipe_text.strip():
+                st.error("Recipe text is empty or invalid.")
+                st.stop()  # important: stop here to prevent further execution
+
             # Clear matched product and previous selections
             st.session_state.matched_products = []
 
@@ -155,20 +321,36 @@ with tab_recipe:
                 if k in st.session_state:
                     del st.session_state[k]
 
-            # Stub: populate parsed ingredients (replace with NLP later)
-            if recipe_text:
-                with st.spinner("Making good choices..."):
-                    try:
-                        result = asyncio.run(st.session_state.agent.get_cart_from_recipe(recipe_text))
+            with st.spinner("Making good choices..."):
+                try:
+                    result_raw = asyncio.run(st.session_state.agent.get_cart_from_recipe(recipe_text))
 
-                        st.session_state.cart_url = result["url"]
-                        st.session_state.cart_items = result.get("items", [])
-                        st.session_state.cart_summary = result.get("summary", "")
-            
-                        st.success("Cart generated successfully!")
-            
-                    except Exception as e:
-                        st.error(f"Agent error: {e}")
+                    
+                    # ✅ Expect a dict. Don't parse as JSON.
+                    if not isinstance(result_raw, dict) or "url" not in result_raw:
+                        raise ValueError("Agent did not return expected cart response.")
+                    else:
+                        result = result_raw
+                    # Try parsing it if it's a string
+                    # if isinstance(result_raw, str):
+                    #     try:
+                    #         result = json.loads(result_raw)
+                    #     except json.JSONDecodeError as e:
+                    #         st.error(f"Failed to parse result JSON: {e}")
+                    #         st.code(result_raw)
+                    #         st.stop()
+                    # else:
+                    #     result = result_raw
+
+                    st.session_state.cart_url = result["url"]
+                    st.session_state.cart_items = result.get("items", [])
+                    st.session_state.cart_summary = result.get("summary", "")
+
+                    st.success("Cart generated successfully!")
+
+                except Exception as e:
+                    st.error(f"Agent error: {e}")
+                    st.code(traceback.format_exc())
     # -------------------------------------------
     # 🛒 Add Walmart Match UI once ingredients exist
     # -------------------------------------------
@@ -207,34 +389,35 @@ with tab_recipe:
                 st.success("Products selected.")
 
 # ──────────────────────────────────────────────────────────────────
-with tab_search:
-    st.subheader("Quick Walmart field search (mock)")
+if mode != "Use Agent (AI-driven)":
+    with tab_search:
+        st.subheader("Quick Walmart field search (mock)")
 
-    # put widgets inside a form ⇒ app re‑runs only on Submit
-    with st.form("search"):
-        field = st.selectbox(
-            "Field",
-            [
-                "product_id", "itemid", "Brand", "Price", "CustomerRating",
-                "Category", "Availability",
-            ],
-        )
-        value = st.text_input("Value / query")
-        submitted = st.form_submit_button("Search")
+        # put widgets inside a form ⇒ app re‑runs only on Submit
+        with st.form("search"):
+            field = st.selectbox(
+                "Field",
+                [
+                    "product_id", "itemid", "Brand", "Price", "CustomerRating",
+                    "Category", "Availability",
+                ],
+            )
+            value = st.text_input("Value / query")
+            submitted = st.form_submit_button("Search")
 
-    if submitted and value:
-        st.success("Mock query executed – plug API key for live data")
-        st.json(
-            {
-                "field": field,
-                "value": value,
-                "items": [
-                    {"name": f"Mock Product for {value}","itemId": 46491801,  "price": 2.99},
-                    {"name": f"Another Mock {value} Product","itemId": 10452368, "price": 3.49}
-                ]
-            }
-        )   
-        st.success("Data fetched (mock). Integrate your real API key for live results!")
+        if submitted and value:
+            st.success("Mock query executed – plug API key for live data")
+            st.json(
+                {
+                    "field": field,
+                    "value": value,
+                    "items": [
+                        {"name": f"Mock Product for {value}","itemId": 46491801,  "price": 2.99},
+                        {"name": f"Another Mock {value} Product","itemId": 10452368, "price": 3.49}
+                    ]
+                }
+            )   
+            st.success("Data fetched (mock). Integrate your real API key for live results!")
 # ──────────────────────────────────────────────────────────────────
 with tab_cart:
     if st.session_state.mode == "Use Agent (AI-driven)" and st.session_state.get("cart_url"):
@@ -243,6 +426,18 @@ with tab_cart:
         url = st.session_state.cart_url
         st.text_input("Cart URL", value=url)
         st.markdown(f"[Open in Walmart Cart]({url})")
+
+# with tab_cart:
+#     if st.session_state.get("cart_items"):
+#         st.subheader("Your Cart")
+#         for item in st.session_state.cart_items:
+#             product_card(
+#                 name=item.get("name", "Unnamed"),
+#                 price=item.get("price", 0.0),
+#                 description="Auto-selected by recipe agent",
+#                 rating=item.get("rating", 4.0)
+#             )
+#         cart_summary(st.session_state.cart_items)
     # Mock setup
     # if st.session_state.get("matched_products"):
     #     st.subheader("3. Cart Preview & Export")

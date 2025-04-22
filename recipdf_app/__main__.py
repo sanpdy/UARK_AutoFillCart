@@ -1,6 +1,6 @@
 import asyncio
-from recipe_processing import select_file_and_extract_text
-from agent_definitions.agents.unified_cart_autofill_agent import UnifiedCartAutofillAgent
+from recipdf_app.recipe_processing import select_file_and_extract_text
+from recipdf_app.agent_definitions.agents.unified_cart_autofill_agent import UnifiedCartAutofillAgent
 
 def main():
     agent = UnifiedCartAutofillAgent()

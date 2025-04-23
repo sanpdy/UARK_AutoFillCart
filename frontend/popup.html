@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Walmart Recipe Assistant</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="extension-container">
+    <!-- Header with logo and title -->
+    <header class="app-header">
+      <div class="logo-container">
+        <img src="images/icon48.png" alt="Walmart Recipe Assistant" class="app-logo">
+      </div>
+      <h1 class="app-title">Walmart Recipe Assistant</h1>
+    </header>
+
+    <div class="content-container">
+      <!-- Navigation tabs -->
+      <nav class="tabs-navigation">
+        <div class="tab active" data-tab="chat">Recipe Helper</div>
+        <div class="tab" data-tab="settings">Settings</div>
+      </nav>
+
+      <!-- Chat Interface Tab -->
+      <section class="tab-content active" id="chat-tab">
+        <div class="chat-container">
+          <!-- Chat messages area -->
+          <div class="chat-messages" id="chat-messages">
+            <!-- Initial welcome message added via JS -->
+          </div>
+          
+          <!-- Input area with file upload and message input -->
+          <div class="chat-input-container">
+            <div class="file-upload-wrapper">
+              <label for="recipe-pdf" class="pdf-upload-btn" title="Upload recipe PDF">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="17 8 12 3 7 8"></polyline>
+                  <line x1="12" y1="3" x2="12" y2="15"></line>
+                </svg>
+              </label>
+              <input type="file" id="recipe-pdf" accept=".pdf">
+              <div id="file-name" class="file-name"></div>
+            </div>
+            
+            <textarea id="user-message" placeholder="Ask about a recipe or describe what you'd like to make..." rows="1"></textarea>
+            
+            <button id="send-message" class="send-button" aria-label="Send message">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="22" y1="2" x2="11" y2="13"></line>
+                <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </section>
+      
+      <!-- Settings Tab -->
+      <section class="tab-content" id="settings-tab">
+        <div class="settings-panel">
+          <div class="form-group">
+            <label for="backend-url">Backend API URL:</label>
+            <input type="text" id="backend-url" placeholder="https://your-backend-url.com/api">
+          </div>
+          <button id="save-settings" class="primary-button">Save Settings</button>
+        </div>
+      </section>
+
+      <!-- Loading indicator -->
+      <div class="loading-overlay" id="loading-indicator">
+        <div class="loading-container">
+          <div class="spinner"></div>
+          <p>Finding ingredients...</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

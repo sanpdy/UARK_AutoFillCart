@@ -96,7 +96,6 @@ class WalmartAPI:
 
         return headers
 
-    @staticmethod
     def with_walmart_headers(method):
         """
         Decorator that automatically injects Walmart request headers into

@@ -60,7 +60,7 @@ def main():
         filetypes=[("PDF Files", "*.pdf")]
     )
     if not pdf_path:
-        return  # Exit if no file is selected
+        return  
 
     # Prompt the user to specify the output Markdown file.
     markdown_path = filedialog.asksaveasfilename(
@@ -69,7 +69,7 @@ def main():
         filetypes=[("Markdown Files", "*.md"), ("All Files", "*.*")]
     )
     if not markdown_path:
-        return  # Exit if no output path is specified
+        return  
 
     # Convert the selected PDF to Markdown.
     convert_pdf_to_markdown(pdf_path, markdown_path)

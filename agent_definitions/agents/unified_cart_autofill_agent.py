@@ -4,8 +4,9 @@ import json
 import yaml
 
 from agent_definitions.agent_superclass import Agent
-from recipe_processing import select_file_and_extract_text
+from agent_definitions.recipe_processing import select_file_and_extract_text
 from walmart_affiliate_api_utils import WalmartAPI, filter_walmart_search_result_props
+import os
 
 output_shopping_list_tool_def = {
     "type": "function",
@@ -108,10 +109,17 @@ class UnifiedCartAutofillAgent(Agent):
     def __init__(self, llm='gpt-4o-mini', llm_api_provider='openai', max_retries=1):
         system_prompt = "You are an agent in charge of finding items from an online shopping website to put in the user's cart based on a recipe."
         super().__init__(llm=llm, llm_api_provider=llm_api_provider, system_prompt=system_prompt)
+        # self.walmart_api_wrapper = WalmartAPI(
+        #     consumer_id="fe944cf5-2cd6-4664-8d8a-1a6e0882d722",
+        #     key_version="1",
+        #     key_file_path=r"C:\Users\Stephen Pierson\.ssh\rsa_key_20250410_v2"
+        # )
+        consumer_id = os.environ["CONSUMER_ID"]
+        rsa_key= os.environ["RSA_KEY_PATH"]
         self.walmart_api_wrapper = WalmartAPI(
-            consumer_id="fe944cf5-2cd6-4664-8d8a-1a6e0882d722",
+            consumer_id=consumer_id,
             key_version="1",
-            key_file_path=r"C:\Users\Stephen Pierson\.ssh\rsa_key_20250410_v2"
+            key_file_path=rf'{rsa_key}'
         )
         # Set the maximum retries for a single shopping list item.
         self.max_retries = max_retries

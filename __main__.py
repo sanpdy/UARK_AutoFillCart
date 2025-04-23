@@ -1,6 +1,6 @@
 import asyncio
 
-from recipe_processing import select_file_and_extract_text
+from UARK_AutoFillCart.agent_definitions.recipe_processing import select_file_and_extract_text
 from agent_definitions.agents.unified_cart_autofill_agent import UnifiedCartAutofillAgent
 
 if __name__ == "__main__":

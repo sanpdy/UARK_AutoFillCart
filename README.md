@@ -5,7 +5,7 @@ This was started for the UArk AI Workshop with Walmart!
 ---
 
 ## **Objective**
-The intent of this project is to provide an **AI-powered shopping agent** that attaches to the Walmart app and interprets queries from users to generate a list of necessary items, relevant products, and substitutions.
+The intent of this project is to provide an **AI-powered shopping agent** that attaches to the Walmart shopping site, extracts text based recipe ingredients, and interprets queries from users to generate a list of necessary items, relevant products, and substitutions. Then will need to creat a walmart shopping cart with the ingredients.
 
 ---
 
@@ -42,7 +42,6 @@ The AI will be able to generate curated lists with features like:
 - Sankalp Pandey  
 - Solomon Hufford  
 - Stephen Pierson  
-- Cameron Eddy: DB and UI
 
 ---
 

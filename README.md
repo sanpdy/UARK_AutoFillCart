@@ -48,8 +48,8 @@ The AI will be able to generate curated lists with features like:
 ## **Architecture**
 
 **Models:**  
-- Huggingface  
-- PyTorch  
+- ChatGPT LLM
+- Computer Vision Recipe Matcher 
 
 **Metrics:**  
 - Run time  

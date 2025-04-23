@@ -24,6 +24,12 @@ from recipdf_app.image_recipe_generator.services import (
     generate_cart_url,
 )
 
+def show_success(msg: str):
+    """Render a fully-styled success banner."""
+    html = f'<div class="custom-success">{msg}</div>'
+    st.markdown(html, unsafe_allow_html=True)
+
+
 try:
     from transformers import pipeline as hf_pipeline
 except ImportError:
@@ -46,6 +52,16 @@ st.markdown(
         --walmart-medium-gray: #e6e6e6;
     }
     
+    .custom-success {
+        background-color: var(--walmart-blue) !important;
+        color:            var(--walmart-light-gray)   !important;
+        border-left:      4px solid var(--walmart-yellow) !important;
+        padding:          0.75rem 1rem          !important;
+        border-radius:    4px                   !important;
+        margin:           1rem 0               !important;
+        font-weight:      600                   !important;
+    }
+
     /* Sidebar styling */
     [data-testid="stSidebar"] {
         background-color: var(--walmart-blue) !important;
@@ -285,7 +301,7 @@ with tab_recipe:
                     os.path.splitext(image_file.name)[1]
                 )
                 dish_label = lbl.replace("_", " ").title()
-                st.success(f"Predicted dish: **{dish_label}** (confidence {conf:.2f})")
+                show_success(f"Predicted dish: **{dish_label}** (confidence {conf:.2f})")
 
                 # find recipes
                 recipes = find_recipes(dish_label)
@@ -315,12 +331,12 @@ with tab_recipe:
                         "recipe_text": recipe_text,
                     }
                     st.session_state.recipe_text = recipe_text
-                    st.success(f"Found recipe: **{choice}**")
+                    show_success(f"Found recipe: **{choice}**")
 
             # 2) Generate cart
             if st.session_state.get("recipe_data"):
                 rd = st.session_state.recipe_data
-                st.success(f"Ready to generate cart for **{rd['title']}**")
+                show_success(f"Ready to generate cart for **{rd['title']}**")
                 if st.button("Generate Cart from This Recipe", key="generate_cart"):
                     with st.spinner("Creating Walmart cart..."):
                         resp = asyncio.run(
@@ -329,7 +345,7 @@ with tab_recipe:
                         st.session_state.cart_url     = resp.get("url")
                         st.session_state.cart_items   = resp.get("items", [])
                         st.session_state.cart_summary = resp.get("summary", "")
-                        st.success("Cart generated successfully!")
+                        show_success("Cart generated successfully!")
 
 
     st.markdown("---")
@@ -357,7 +373,7 @@ with tab_recipe:
                     st.session_state.cart_url = result_raw["url"]
                     st.session_state.cart_items = result_raw.get("items", [])
                     st.session_state.cart_summary = result_raw.get("summary", "")
-                    st.success("Cart generated successfully!")
+                    show_success("Cart generated successfully!")
                 except Exception as e:
                     st.error(f"Agent error: {e}")
                     st.code(traceback.format_exc())
@@ -371,7 +387,7 @@ with tab_cart:
         st.text_input("Cart URL", value=url)
         st.markdown(f"""
             <div style="display: flex; justify-content: center; margin: 20px 0;">
-                <a href="{url}" target="_blank" style="...">🛒 Open in Walmart Cart</a>
+                <a href="{url}" target="_blank" style="...">Open in Walmart Cart</a>
             </div>
         """, unsafe_allow_html=True)
 

@@ -224,11 +224,13 @@ class WalmartAPI:
 
 # Example usages:
 if __name__ == "__main__":
+    from load_env import walmart_consumer_id, walmart_key_version, walmart_private_key_path
+
     # Create an instance of WalmartAPI with your credentials.
     walmart_api = WalmartAPI(
-        consumer_id="fe944cf5-2cd6-4664-8d8a-1a6e0882d722",
-        key_version="1",
-        key_file_path=r"C:\Users\Stephen Pierson\.ssh\rsa_key_20250410_v2"
+        consumer_id=walmart_consumer_id,
+        key_version=walmart_key_version,
+        key_file_path=walmart_private_key_path
     )
 
     # walmart_api = WalmartAPI(

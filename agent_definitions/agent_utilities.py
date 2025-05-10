@@ -19,7 +19,7 @@ import anthropic
 from colorama import Fore, Style
 from pydantic import BaseModel
 
-from load_env import openai_api_key  #, anthropic_api_key
+from load_env import openai_api_key
 
 # Load environment variables from the .env file
 load_dotenv()

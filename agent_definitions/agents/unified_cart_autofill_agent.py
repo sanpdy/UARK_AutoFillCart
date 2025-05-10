@@ -6,7 +6,8 @@ import yaml
 from agent_definitions.agent_superclass import Agent
 from agent_definitions.recipe_processing import select_file_and_extract_text
 from walmart_affiliate_api_utils import WalmartAPI, filter_walmart_search_result_props
-import os
+
+from load_env import walmart_consumer_id, walmart_key_version, walmart_private_key_path
 
 output_shopping_list_tool_def = {
     "type": "function",
@@ -114,12 +115,10 @@ class UnifiedCartAutofillAgent(Agent):
         #     key_version="1",
         #     key_file_path=r"C:\Users\Stephen Pierson\.ssh\rsa_key_20250410_v2"
         # )
-        consumer_id = os.environ["CONSUMER_ID"]
-        rsa_key= os.environ["RSA_KEY_PATH"]
         self.walmart_api_wrapper = WalmartAPI(
-            consumer_id=consumer_id,
-            key_version="1",
-            key_file_path=rf'{rsa_key}'
+            consumer_id=walmart_consumer_id,
+            key_version=walmart_key_version,
+            key_file_path=rf'{walmart_private_key_path}'
         )
         # Set the maximum retries for a single shopping list item.
         self.max_retries = max_retries

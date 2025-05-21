@@ -16,9 +16,14 @@
         "128": "images/icon128.png"
       }
     },
-    "permissions": ["activeTab", "storage"],
+    "permissions": [
+      "activeTab",
+      "storage",
+      "file_system"
+    ],
     "host_permissions": [
-      "*://*.walmart.com/*"
+      "*://*.walmart.com/*",
+      "http://localhost:5000/*"
     ],
     "content_scripts": [
       {

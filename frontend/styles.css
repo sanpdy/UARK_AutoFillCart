@@ -727,3 +727,126 @@ img.alternative-image[src*="/images/placeholder.png"]:after {
   font-size: var(--font-xs);
   color: var(--text-secondary);
 }
+
+/* ========= Upload Area ========= */
+.upload-container {
+  padding: var(--space-md);
+}
+
+.upload-area {
+  border: 2px dashed var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl);
+  text-align: center;
+  background-color: var(--bg-light);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+}
+
+.upload-area:hover {
+  border-color: var(--walmart-blue);
+  background-color: var(--walmart-blue-light);
+}
+
+.upload-area.drag-over {
+  border-color: var(--walmart-blue);
+  background-color: var(--walmart-blue-light);
+  transform: scale(1.02);
+}
+
+.upload-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.upload-icon {
+  color: var(--walmart-blue);
+  margin-bottom: var(--space-sm);
+}
+
+.upload-text {
+  font-size: var(--font-lg);
+  font-weight: 500;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.upload-subtext {
+  font-size: var(--font-md);
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.upload-button {
+  background-color: var(--walmart-blue);
+  color: var(--white);
+  border: none;
+  padding: var(--space-sm) var(--space-xl);
+  border-radius: var(--radius-md);
+  font-size: var(--font-md);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-block;
+  text-align: center;
+}
+
+.upload-button:hover {
+  background-color: var(--walmart-blue-dark);
+  transform: translateY(-1px);
+}
+
+.upload-button:active {
+  transform: translateY(0);
+}
+
+.file-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.file-name {
+  margin-top: var(--space-md);
+  font-size: var(--font-sm);
+  color: var(--text-secondary);
+  word-break: break-all;
+}
+
+/* ========= Error Display ========= */
+.error-display {
+  margin-top: var(--space-md);
+  padding: var(--space-md);
+  border-radius: var(--radius-md);
+  background-color: #feeae9;
+  border: 1px solid #f5aca5;
+  color: #d0021b;
+  font-size: var(--font-sm);
+  display: none;
+  animation: fadeIn 0.3s ease;
+}
+
+.error-display.show {
+  display: block;
+}
+
+.error-display pre {
+  margin-top: var(--space-sm);
+  padding: var(--space-sm);
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: var(--radius-sm);
+  overflow-x: auto;
+  font-family: monospace;
+  font-size: var(--font-xs);
+  white-space: pre-wrap;
+  word-break: break-all;
+}

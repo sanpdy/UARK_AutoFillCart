@@ -1,6 +1,8 @@
 // Walmart Recipe Assistant Extension
 
 document.addEventListener('DOMContentLoaded', () => {
+  console.log('DOM Content Loaded');
+
   // DOM Elements
   const elements = {
     tabs: document.querySelectorAll('.tab'),
@@ -9,10 +11,14 @@ document.addEventListener('DOMContentLoaded', () => {
     userMessageInput: document.getElementById('user-message'),
     sendMessageButton: document.getElementById('send-message'),
     fileInput: document.getElementById('recipe-pdf'),
-    fileNameDisplay: document.getElementById('file-name'),
+    fileName: document.getElementById('file-name'),
     backendUrlInput: document.getElementById('backend-url'),
     saveSettingsButton: document.getElementById('save-settings'),
-    loadingIndicator: document.getElementById('loading-indicator')
+    loadingIndicator: document.getElementById('loading-indicator'),
+    dropZone: document.getElementById('drop-zone'),
+    uploadButton: document.querySelector('.upload-button'),
+    errorDisplay: document.getElementById('error-display'),
+    browseButton: document.getElementById('browse-button')
   };
   
   // State
@@ -78,18 +84,171 @@ document.addEventListener('DOMContentLoaded', () => {
       
       const selectedFile = e.target.files[0];
       if (selectedFile) {
-        elements.fileNameDisplay.textContent = selectedFile.name;
-        elements.fileNameDisplay.style.display = 'block';
+        elements.fileName.textContent = selectedFile.name;
+        elements.fileName.style.display = 'block';
         addUserMessage(`I've uploaded a recipe file: ${selectedFile.name}`);
         
         // Process the PDF file directly
         processPdfFile(selectedFile);
       } else {
-        elements.fileNameDisplay.style.display = 'none';
+        elements.fileName.style.display = 'none';
       }
     });
     
     elements.saveSettingsButton.addEventListener('click', saveSettings);
+
+    // Prevent default drag behaviors
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+      elements.dropZone.addEventListener(eventName, preventDefaults, false);
+      document.body.addEventListener(eventName, preventDefaults, false);
+    });
+
+    // Highlight drop zone when item is dragged over it
+    ['dragenter', 'dragover'].forEach(eventName => {
+      elements.dropZone.addEventListener(eventName, highlight, false);
+    });
+
+    ['dragleave', 'drop'].forEach(eventName => {
+      elements.dropZone.addEventListener(eventName, unhighlight, false);
+    });
+
+    // Handle dropped files
+    elements.dropZone.addEventListener('drop', handleDrop, false);
+
+    // Handle file input change
+    elements.fileInput.addEventListener('change', handleFileSelect, false);
+
+    // Handle browse button click
+    elements.browseButton.addEventListener('click', function(e) {
+      console.log('Browse button clicked');
+      e.preventDefault();
+      e.stopPropagation();
+      
+      try {
+        // Create and trigger a click event
+        const clickEvent = new MouseEvent('click', {
+          view: window,
+          bubbles: true,
+          cancelable: true
+        });
+        elements.fileInput.dispatchEvent(clickEvent);
+      } catch (error) {
+        logError('Error opening file dialog:', error);
+      }
+    });
+
+    // Debug logging
+    function logError(message, error = null) {
+      console.error(message, error);
+      if (elements.errorDisplay) {
+        elements.errorDisplay.innerHTML = `
+          <div>${message}</div>
+          ${error ? `<pre>${error.stack || error}</pre>` : ''}
+        `;
+        elements.errorDisplay.classList.add('show');
+      } else {
+        console.error('Error display element not found');
+      }
+    }
+
+    // Clear error display
+    function clearError() {
+      if (elements.errorDisplay) {
+        elements.errorDisplay.classList.remove('show');
+        elements.errorDisplay.innerHTML = '';
+      }
+    }
+
+    function preventDefaults(e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+
+    function highlight(e) {
+      elements.dropZone.classList.add('drag-over');
+    }
+
+    function unhighlight(e) {
+      elements.dropZone.classList.remove('drag-over');
+    }
+
+    function handleDrop(e) {
+      try {
+        const dt = e.dataTransfer;
+        const files = dt.files;
+        handleFiles(files);
+      } catch (error) {
+        logError('Error handling dropped files:', error);
+      }
+    }
+
+    function handleFileSelect(e) {
+      console.log('File input change event triggered');
+      try {
+        const files = e.target.files;
+        handleFiles(files);
+      } catch (error) {
+        logError('Error handling selected files:', error);
+      }
+    }
+
+    function handleFiles(files) {
+      try {
+        if (!files || files.length === 0) {
+          logError('No files selected');
+          return;
+        }
+
+        const file = files[0];
+        console.log('File selected:', file.name, file.type);
+        
+        // Check if file is PDF
+        if (file.type !== 'application/pdf') {
+          logError('Please upload a PDF file');
+          return;
+        }
+
+        // Clear any previous errors
+        clearError();
+
+        // Display file name
+        elements.fileName.textContent = file.name;
+
+        // Show loading indicator
+        elements.loadingIndicator.style.display = 'flex';
+
+        // Create FormData and append file
+        const formData = new FormData();
+        formData.append('file', file);
+
+        // Send file to backend
+        fetch('http://localhost:5000/api/upload', {
+          method: 'POST',
+          body: formData
+        })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then(data => {
+          // Handle successful upload
+          console.log('Success:', data);
+          // Hide loading indicator
+          elements.loadingIndicator.style.display = 'none';
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          // Hide loading indicator
+          elements.loadingIndicator.style.display = 'none';
+          logError('Error uploading file:', error);
+        });
+      } catch (error) {
+        logError('Error processing files:', error);
+        elements.loadingIndicator.style.display = 'none';
+      }
+    }
   }
   
   // Add a new function to handle PDF file processing
